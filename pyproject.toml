@@ -108,3 +108,8 @@ asyncio_mode = "auto"
 markers = [
     "e2e: End-to-end tests using real or mock live OpenAPI specifications",
 ]
+
+[dependency-groups]
+dev = [
+    "bump-my-version>=1.5.0",
+]
