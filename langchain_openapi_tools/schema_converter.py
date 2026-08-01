@@ -7,8 +7,8 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, create_model
 
-from langchain_openapi.enums import DataType
-from langchain_openapi.models import Operation, Schema
+from langchain_openapi_tools.enums import DataType
+from langchain_openapi_tools.models import Operation, Schema
 
 logger = logging.getLogger(__name__)
 

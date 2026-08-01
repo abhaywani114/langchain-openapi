@@ -7,7 +7,7 @@ from typing import Protocol, runtime_checkable
 
 import httpx
 
-from langchain_openapi.exceptions import AuthenticationError, ProviderError
+from langchain_openapi_tools.exceptions import AuthenticationError, ProviderError
 
 logger = logging.getLogger(__name__)
 

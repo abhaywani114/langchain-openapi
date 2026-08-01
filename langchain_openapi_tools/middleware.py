@@ -10,7 +10,7 @@ from typing import Any, Protocol, runtime_checkable
 
 import httpx
 
-from langchain_openapi.utils import sanitize_request_log
+from langchain_openapi_tools.utils import sanitize_request_log
 
 logger = logging.getLogger(__name__)
 

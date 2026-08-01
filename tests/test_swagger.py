@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from langchain_openapi import (
+from langchain_openapi_tools import (
     OpenAPILoader,
     OpenAPISpec,
     OpenAPIToolkit,
@@ -237,7 +237,7 @@ def test_swagger_base_url_generation() -> None:
     toolkit = OpenAPIToolkit.from_dict(crossref_swagger)
     assert toolkit.spec.servers == ["https://api.crossref.org"]
 
-    from langchain_openapi.parser import OpenAPIParser
+    from langchain_openapi_tools.parser import OpenAPIParser
 
     parser = OpenAPIParser(toolkit.spec)
     ops = parser.parse()

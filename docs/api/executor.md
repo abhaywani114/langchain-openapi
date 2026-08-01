@@ -1,5 +1,5 @@
 # AsyncHTTPExecutor API Reference
 
-::: langchain_openapi.executor.AsyncHTTPExecutor
-::: langchain_openapi.executor.RequestBuilder
-::: langchain_openapi.executor.ResponseParser
+::: langchain_openapi_tools.executor.AsyncHTTPExecutor
+::: langchain_openapi_tools.executor.RequestBuilder
+::: langchain_openapi_tools.executor.ResponseParser

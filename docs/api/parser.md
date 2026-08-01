@@ -1,4 +1,4 @@
 # OpenAPIParser API Reference
 
-::: langchain_openapi.parser.OpenAPIParser
-::: langchain_openapi.parser.ReferenceResolver
+::: langchain_openapi_tools.parser.OpenAPIParser
+::: langchain_openapi_tools.parser.ReferenceResolver

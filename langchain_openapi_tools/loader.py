@@ -7,9 +7,9 @@ from typing import Any
 
 import httpx
 
-from langchain_openapi.exceptions import SpecLoadError
-from langchain_openapi.parser import OpenAPISpec
-from langchain_openapi.utils import parse_json_or_yaml, validate_raw_spec
+from langchain_openapi_tools.exceptions import SpecLoadError
+from langchain_openapi_tools.parser import OpenAPISpec
+from langchain_openapi_tools.utils import parse_json_or_yaml, validate_raw_spec
 
 logger = logging.getLogger(__name__)
 
@@ -139,7 +139,7 @@ class OpenAPILoader:
         validate_raw_spec(raw_data)
         swagger_ver = str(raw_data.get("swagger", ""))
         if raw_data.get("swagger") == "2.0" or swagger_ver.startswith("2."):
-            from langchain_openapi.swagger import SwaggerNormalizer
+            from langchain_openapi_tools.swagger import SwaggerNormalizer
 
             raw_data = SwaggerNormalizer(raw_data).normalize()
         spec = OpenAPISpec.from_dict(raw_data)

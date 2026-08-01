@@ -6,7 +6,7 @@ import httpx
 import pytest
 import respx
 
-from langchain_openapi import (
+from langchain_openapi_tools import (
     APIKeyHeaderProvider,
     APIKeyQueryProvider,
     AsyncHTTPExecutor,
@@ -22,7 +22,7 @@ from langchain_openapi import (
     RequestProvider,
     StaticHeadersProvider,
 )
-from langchain_openapi.utils import sanitize_request_log
+from langchain_openapi_tools.utils import sanitize_request_log
 
 
 @pytest.mark.asyncio

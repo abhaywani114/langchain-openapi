@@ -9,7 +9,7 @@ Note on Limitations:
 from dataclasses import dataclass, field
 from typing import Any
 
-from langchain_openapi.enums import DataType, HTTPMethod, ParameterLocation
+from langchain_openapi_tools.enums import DataType, HTTPMethod, ParameterLocation
 
 
 @dataclass

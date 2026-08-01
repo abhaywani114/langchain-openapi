@@ -11,14 +11,14 @@ from typing import Any, Literal
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.tools import BaseTool, StructuredTool, ToolException
 
-from langchain_openapi.exceptions import HTTPExecutionError
-from langchain_openapi.executor import AsyncHTTPExecutor
-from langchain_openapi.loader import OpenAPILoader
-from langchain_openapi.middleware import Middleware
-from langchain_openapi.models import Operation
-from langchain_openapi.parser import OpenAPIParser, OpenAPISpec
-from langchain_openapi.providers import RequestProvider
-from langchain_openapi.schema_converter import SchemaConverter
+from langchain_openapi_tools.exceptions import HTTPExecutionError
+from langchain_openapi_tools.executor import AsyncHTTPExecutor
+from langchain_openapi_tools.loader import OpenAPILoader
+from langchain_openapi_tools.middleware import Middleware
+from langchain_openapi_tools.models import Operation
+from langchain_openapi_tools.parser import OpenAPIParser, OpenAPISpec
+from langchain_openapi_tools.providers import RequestProvider
+from langchain_openapi_tools.schema_converter import SchemaConverter
 
 logger = logging.getLogger(__name__)
 

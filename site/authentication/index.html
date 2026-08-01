@@ -1055,7 +1055,7 @@
 <h2 id="built-in-authentication-providers">Built-in Authentication Providers</h2>
 <h3 id="1-bearer-auth-provider">1. Bearer Auth Provider</h3>
 <p>Injects an <code>Authorization: Bearer &lt;TOKEN&gt;</code> header.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">BearerAuthProvider</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">BearerAuthProvider</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="s2">&quot;https://api.github.com/openapi&quot;</span><span class="p">,</span>
@@ -1064,7 +1064,7 @@
 </code></pre></div>
 <h3 id="2-api-key-header-provider">2. API Key Header Provider</h3>
 <p>Injects an API key in a designated request header.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIKeyHeaderProvider</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIKeyHeaderProvider</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="s2">&quot;https://api.example.com/spec.json&quot;</span><span class="p">,</span>
@@ -1073,7 +1073,7 @@
 </code></pre></div>
 <h3 id="3-api-key-query-provider">3. API Key Query Provider</h3>
 <p>Appends an API key as a query parameter.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIKeyQueryProvider</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIKeyQueryProvider</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="s2">&quot;https://api.example.com/spec.json&quot;</span><span class="p">,</span>
@@ -1082,7 +1082,7 @@
 </code></pre></div>
 <h3 id="4-basic-auth-provider">4. Basic Auth Provider</h3>
 <p>Injects HTTP Basic Authentication credentials.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicAuthProvider</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicAuthProvider</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="s2">&quot;https://api.example.com/spec.json&quot;</span><span class="p">,</span>
@@ -1092,7 +1092,7 @@
 <hr />
 <h2 id="combining-providers-with-compositeprovider">Combining Providers with CompositeProvider</h2>
 <p>Chain multiple request providers sequentially using <code>CompositeProvider</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">BearerAuthProvider</span><span class="p">,</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">CompositeProvider</span><span class="p">,</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">CookiesProvider</span><span class="p">,</span>

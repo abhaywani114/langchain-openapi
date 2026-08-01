@@ -40,12 +40,18 @@ uv add langchain-openapi-tools
 Import in Python:
 
 ```python
-from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
+from langchain_openapi_tools import OpenAPIToolkit, OpenAPIToolkitConfig
 ```
 
-> **Note on Package Naming:**
-> The PyPI distribution package name is **`langchain-openapi-tools`**, whereas the Python import module name is **`langchain_openapi`**.
-> This distinction is common in Python packages (e.g. `beautifulsoup4` → `import bs4`, `opencv-python` → `import cv2`).
+### Migration Note
+
+```python
+# Old (deprecated, but still works for backward compatibility):
+from langchain_openapi import OpenAPIToolkit
+
+# New (recommended):
+from langchain_openapi_tools import OpenAPIToolkit
+```
 
 ---
 
@@ -72,7 +78,7 @@ from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
 ## Quick Start
 
 ```python
-from langchain_openapi import OpenAPIToolkit
+from langchain_openapi_tools import OpenAPIToolkit
 
 # Load spec from remote URL or local file
 toolkit = OpenAPIToolkit.from_url("https://api.crossref.org/swagger-docs")
@@ -89,7 +95,7 @@ for tool in tools[:3]:
 
 ```python
 import asyncio
-from langchain_openapi import OpenAPIToolkit
+from langchain_openapi_tools import OpenAPIToolkit
 
 
 async def main():
@@ -109,12 +115,12 @@ if __name__ == "__main__":
 
 ## Prompt Optimization & Tool Customization
 
-Large OpenAPI specifications can generate extensive tool descriptions that exceed model context windows. `langchain_openapi` provides full control over description generation and context footprint.
+Large OpenAPI specifications can generate extensive tool descriptions that exceed model context windows. `langchain_openapi_tools` provides full control over description generation and context footprint.
 
 ### Configuration Object (`OpenAPIToolkitConfig`)
 
 ```python
-from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
+from langchain_openapi_tools import OpenAPIToolkit, OpenAPIToolkitConfig
 
 config = OpenAPIToolkitConfig(
     description_mode="compact",

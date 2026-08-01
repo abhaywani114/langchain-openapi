@@ -19,7 +19,7 @@
 ## Quick Example
 
 ```python
-from langchain_openapi import OpenAPIToolkit
+from langchain_openapi_tools import OpenAPIToolkit
 
 # Load spec from remote URL or local file
 toolkit = OpenAPIToolkit.from_url("https://api.crossref.org/swagger-docs")

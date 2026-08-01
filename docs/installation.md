@@ -31,7 +31,17 @@ pip install langchain-openapi-tools
 ## Importing in Python
 
 ```python
-from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
+from langchain_openapi_tools import OpenAPIToolkit, OpenAPIToolkitConfig
+```
+
+### Migration Note
+
+```python
+# Old (deprecated):
+from langchain_openapi import OpenAPIToolkit
+
+# New (recommended):
+from langchain_openapi_tools import OpenAPIToolkit
 ```
 
 ---
@@ -41,7 +51,7 @@ from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
 Run a quick Python command to verify that `langchain-openapi` is correctly installed:
 
 ```bash
-python -c "import langchain_openapi; print(langchain_openapi.__version__)"
+python -c "import langchain_openapi_tools; print(langchain_openapi.__version__)"
 ```
 
 ---

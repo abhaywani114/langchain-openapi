@@ -11,7 +11,7 @@ Large OpenAPI specifications (e.g. Crossref, GitHub, Slack) contain extensive op
 Customize tool creation behavior by initializing an `OpenAPIToolkitConfig` object and passing it to `OpenAPIToolkit`:
 
 ```python
-from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
+from langchain_openapi_tools import OpenAPIToolkit, OpenAPIToolkitConfig
 
 config = OpenAPIToolkitConfig(
     description_mode="compact",

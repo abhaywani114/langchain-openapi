@@ -1,8 +1,8 @@
 # Middleware API Reference
 
-::: langchain_openapi.middleware.MiddlewarePipeline
-::: langchain_openapi.middleware.RetryMiddleware
-::: langchain_openapi.middleware.RateLimitMiddleware
-::: langchain_openapi.middleware.CacheMiddleware
-::: langchain_openapi.middleware.PaginationMiddleware
-::: langchain_openapi.middleware.LoggingMiddleware
+::: langchain_openapi_tools.middleware.MiddlewarePipeline
+::: langchain_openapi_tools.middleware.RetryMiddleware
+::: langchain_openapi_tools.middleware.RateLimitMiddleware
+::: langchain_openapi_tools.middleware.CacheMiddleware
+::: langchain_openapi_tools.middleware.PaginationMiddleware
+::: langchain_openapi_tools.middleware.LoggingMiddleware

@@ -9,7 +9,7 @@ import pytest
 import respx
 from httpx import Response
 
-from langchain_openapi import (
+from langchain_openapi_tools import (
     InvalidSpecError,
     OpenAPILoader,
     OpenAPISpec,

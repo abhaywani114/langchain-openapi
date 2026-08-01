@@ -8,7 +8,7 @@ This example demonstrates using `langchain-openapi` with the public [Crossref RE
 
 ```python
 import asyncio
-from langchain_openapi import OpenAPIToolkit, RetryMiddleware, LoggingMiddleware
+from langchain_openapi_tools import OpenAPIToolkit, RetryMiddleware, LoggingMiddleware
 
 
 async def main():

@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from langchain_openapi import (
+from langchain_openapi_tools import (
     DataType,
     HTTPMethod,
     MediaType,

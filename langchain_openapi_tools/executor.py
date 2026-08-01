@@ -9,17 +9,17 @@ from urllib.parse import urljoin
 
 import httpx
 
-from langchain_openapi.enums import ParameterLocation
-from langchain_openapi.exceptions import (
+from langchain_openapi_tools.enums import ParameterLocation
+from langchain_openapi_tools.exceptions import (
     ExecutionTimeoutError,
     HTTPExecutionError,
     RequestValidationError,
     ResponseParsingError,
 )
-from langchain_openapi.middleware import Middleware, MiddlewarePipeline
-from langchain_openapi.models import Operation
-from langchain_openapi.providers import NoAuthProvider, RequestProvider
-from langchain_openapi.utils import sanitize_request_log
+from langchain_openapi_tools.middleware import Middleware, MiddlewarePipeline
+from langchain_openapi_tools.models import Operation
+from langchain_openapi_tools.providers import NoAuthProvider, RequestProvider
+from langchain_openapi_tools.utils import sanitize_request_log
 
 logger = logging.getLogger(__name__)
 

@@ -10,7 +10,7 @@ lint:
 	uv run ruff check .
 
 typecheck:
-	uv run mypy langchain_openapi tests examples
+	uv run mypy langchain_openapi_tools langchain_openapi tests examples
 
 format:
 	uv run ruff format .

@@ -61,7 +61,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["langchain_openapi"]
+packages = ["langchain_openapi_tools", "langchain_openapi"]
 
 [tool.ruff]
 target-version = "py311"
@@ -81,7 +81,7 @@ select = [
 ignore = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["langchain_openapi"]
+known-first-party = ["langchain_openapi_tools", "langchain_openapi"]
 
 [tool.mypy]
 python_version = "3.11"

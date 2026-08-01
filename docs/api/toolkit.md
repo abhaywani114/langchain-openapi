@@ -1,4 +1,4 @@
 # OpenAPIToolkit API Reference
 
-::: langchain_openapi.toolkit.OpenAPIToolkit
-::: langchain_openapi.toolkit.LangChainToolFactory
+::: langchain_openapi_tools.toolkit.OpenAPIToolkit
+::: langchain_openapi_tools.toolkit.LangChainToolFactory

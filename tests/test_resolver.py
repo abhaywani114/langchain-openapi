@@ -2,7 +2,7 @@
 
 import pytest
 
-from langchain_openapi import InvalidSpecError, ReferenceResolver
+from langchain_openapi_tools import InvalidSpecError, ReferenceResolver
 
 
 def test_resolve_simple_local_ref() -> None:

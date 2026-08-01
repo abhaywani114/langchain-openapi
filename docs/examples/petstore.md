@@ -8,7 +8,7 @@ This example demonstrates interacting with the classic Swagger Petstore API usin
 
 ```python
 import asyncio
-from langchain_openapi import OpenAPIToolkit, LoggingMiddleware
+from langchain_openapi_tools import OpenAPIToolkit, LoggingMiddleware
 
 
 async def main():

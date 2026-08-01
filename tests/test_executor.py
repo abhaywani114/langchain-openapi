@@ -4,7 +4,7 @@ import httpx
 import pytest
 import respx
 
-from langchain_openapi import (
+from langchain_openapi_tools import (
     APIKeyHeaderProvider,
     APIKeyQueryProvider,
     AsyncHTTPExecutor,

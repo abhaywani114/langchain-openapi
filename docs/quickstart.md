@@ -9,7 +9,7 @@ Get up and running with `langchain-openapi` in five minutes.
 `OpenAPIToolkit` provides convenient class methods to load specs from URLs, local files, or raw dictionaries.
 
 ```python
-from langchain_openapi import OpenAPIToolkit
+from langchain_openapi_tools import OpenAPIToolkit
 
 # Load from URL
 toolkit = OpenAPIToolkit.from_url("https://api.crossref.org/swagger-docs")
@@ -62,7 +62,7 @@ asyncio.run(main())
 Bind generated tools to an agent or LLM framework:
 
 ```python
-from langchain_openapi import OpenAPIToolkit
+from langchain_openapi_tools import OpenAPIToolkit
 
 toolkit = OpenAPIToolkit.from_url("https://api.crossref.org/swagger-docs")
 tools = toolkit.get_tools()

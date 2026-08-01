@@ -407,6 +407,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Importing in Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migration-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1027,6 +1044,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Importing in Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migration-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1092,17 +1126,24 @@ The PyPI distribution name differs from the Python import name. This is common i
 </blockquote>
 <hr />
 <h2 id="importing-in-python">Importing in Python</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span><span class="p">,</span> <span class="n">OpenAPIToolkitConfig</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span><span class="p">,</span> <span class="n">OpenAPIToolkitConfig</span>
+</code></pre></div>
+<h3 id="migration-note">Migration Note</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Old (deprecated):</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># New (recommended):</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span>
 </code></pre></div>
 <hr />
 <h2 id="verifying-installation">Verifying Installation</h2>
 <p>Run a quick Python command to verify that <code>langchain-openapi</code> is correctly installed:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import langchain_openapi; print(langchain_openapi.__version__)&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import langchain_openapi_tools; print(langchain_openapi.__version__)&quot;</span>
 </code></pre></div>
 <hr />
 <h2 id="optional-dependencies">Optional Dependencies</h2>
 <p>If you plan to contribute to <code>langchain-openapi</code> or run the documentation server locally, install dev dependencies:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>dev
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>dev
 </code></pre></div>
 
 

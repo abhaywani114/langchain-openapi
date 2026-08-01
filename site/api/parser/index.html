@@ -762,7 +762,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#langchain_openapi.parser.OpenAPIParser" class="md-nav__link">
+  <a href="#langchain_openapi_tools.parser.OpenAPIParser" class="md-nav__link">
     <span class="md-ellipsis">
       
         OpenAPIParser
@@ -774,7 +774,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#langchain_openapi.parser.OpenAPIParser.parse" class="md-nav__link">
+  <a href="#langchain_openapi_tools.parser.OpenAPIParser.parse" class="md-nav__link">
     <span class="md-ellipsis">
       
         parse
@@ -790,7 +790,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#langchain_openapi.parser.ReferenceResolver" class="md-nav__link">
+  <a href="#langchain_openapi_tools.parser.ReferenceResolver" class="md-nav__link">
     <span class="md-ellipsis">
       
         ReferenceResolver
@@ -802,7 +802,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#langchain_openapi.parser.ReferenceResolver.resolve" class="md-nav__link">
+  <a href="#langchain_openapi_tools.parser.ReferenceResolver.resolve" class="md-nav__link">
     <span class="md-ellipsis">
       
         resolve
@@ -944,7 +944,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#langchain_openapi.parser.OpenAPIParser" class="md-nav__link">
+  <a href="#langchain_openapi_tools.parser.OpenAPIParser" class="md-nav__link">
     <span class="md-ellipsis">
       
         OpenAPIParser
@@ -956,7 +956,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#langchain_openapi.parser.OpenAPIParser.parse" class="md-nav__link">
+  <a href="#langchain_openapi_tools.parser.OpenAPIParser.parse" class="md-nav__link">
     <span class="md-ellipsis">
       
         parse
@@ -972,7 +972,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#langchain_openapi.parser.ReferenceResolver" class="md-nav__link">
+  <a href="#langchain_openapi_tools.parser.ReferenceResolver" class="md-nav__link">
     <span class="md-ellipsis">
       
         ReferenceResolver
@@ -984,7 +984,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#langchain_openapi.parser.ReferenceResolver.resolve" class="md-nav__link">
+  <a href="#langchain_openapi_tools.parser.ReferenceResolver.resolve" class="md-nav__link">
     <span class="md-ellipsis">
       
         resolve
@@ -1026,8 +1026,8 @@
 
 
 
-<h2 id="langchain_openapi.parser.OpenAPIParser" class="doc doc-heading">
-            <code>langchain_openapi.parser.OpenAPIParser</code>
+<h2 id="langchain_openapi_tools.parser.OpenAPIParser" class="doc doc-heading">
+            <code>langchain_openapi_tools.parser.OpenAPIParser</code>
 
 
 </h2>
@@ -1047,7 +1047,7 @@
 
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>langchain_openapi/parser.py</code></summary>
+                <summary>Source code in <code>langchain_openapi_tools/parser.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-175">175</a></span>
 <span class="normal"><a href="#__codelineno-0-176">176</a></span>
 <span class="normal"><a href="#__codelineno-0-177">177</a></span>
@@ -1325,7 +1325,7 @@
 <a id="__codelineno-0-178" name="__codelineno-0-178"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="n">OpenAPISpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-0-179" name="__codelineno-0-179"></a>        <span class="n">swagger_ver</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;swagger&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
 <a id="__codelineno-0-180" name="__codelineno-0-180"></a>        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;swagger&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;2.0&quot;</span> <span class="ow">or</span> <span class="n">swagger_ver</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;2.&quot;</span><span class="p">):</span>
-<a id="__codelineno-0-181" name="__codelineno-0-181"></a>            <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi.swagger</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwaggerNormalizer</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a>            <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools.swagger</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwaggerNormalizer</span>
 <a id="__codelineno-0-182" name="__codelineno-0-182"></a>
 <a id="__codelineno-0-183" name="__codelineno-0-183"></a>            <span class="n">normalized_raw</span> <span class="o">=</span> <span class="n">SwaggerNormalizer</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
 <a id="__codelineno-0-184" name="__codelineno-0-184"></a>            <span class="n">spec</span> <span class="o">=</span> <span class="n">OpenAPISpec</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">normalized_raw</span><span class="p">)</span>
@@ -1610,7 +1610,7 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="langchain_openapi.parser.OpenAPIParser.parse" class="doc doc-heading">
+<h3 id="langchain_openapi_tools.parser.OpenAPIParser.parse" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">parse</span><span class="p">()</span></code>
 
 </h3>
@@ -1622,7 +1622,7 @@
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>langchain_openapi/parser.py</code></summary>
+              <summary>Source code in <code>langchain_openapi_tools/parser.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-188">188</a></span>
 <span class="normal"><a href="#__codelineno-0-189">189</a></span>
 <span class="normal"><a href="#__codelineno-0-190">190</a></span>
@@ -1708,8 +1708,8 @@
 
 
 
-<h2 id="langchain_openapi.parser.ReferenceResolver" class="doc doc-heading">
-            <code>langchain_openapi.parser.ReferenceResolver</code>
+<h2 id="langchain_openapi_tools.parser.ReferenceResolver" class="doc doc-heading">
+            <code>langchain_openapi_tools.parser.ReferenceResolver</code>
 
 
 </h2>
@@ -1729,7 +1729,7 @@
 
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>langchain_openapi/parser.py</code></summary>
+                <summary>Source code in <code>langchain_openapi_tools/parser.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-87"> 87</a></span>
 <span class="normal"><a href="#__codelineno-0-88"> 88</a></span>
 <span class="normal"><a href="#__codelineno-0-89"> 89</a></span>
@@ -1876,7 +1876,7 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="langchain_openapi.parser.ReferenceResolver.resolve" class="doc doc-heading">
+<h3 id="langchain_openapi_tools.parser.ReferenceResolver.resolve" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">resolve</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">seen</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 </h3>
@@ -1888,7 +1888,7 @@
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>langchain_openapi/parser.py</code></summary>
+              <summary>Source code in <code>langchain_openapi_tools/parser.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-93"> 93</a></span>
 <span class="normal"><a href="#__codelineno-0-94"> 94</a></span>
 <span class="normal"><a href="#__codelineno-0-95"> 95</a></span>

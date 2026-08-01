@@ -4,9 +4,9 @@ import logging
 import re
 from typing import Any
 
-from langchain_openapi.enums import DataType, HTTPMethod, ParameterLocation
-from langchain_openapi.exceptions import InvalidSpecError
-from langchain_openapi.models import (
+from langchain_openapi_tools.enums import DataType, HTTPMethod, ParameterLocation
+from langchain_openapi_tools.exceptions import InvalidSpecError
+from langchain_openapi_tools.models import (
     MediaType,
     Operation,
     Parameter,
@@ -42,7 +42,7 @@ class OpenAPISpec:
         """Construct an OpenAPISpec instance from a raw dictionary."""
         swagger_ver = str(spec_dict.get("swagger", ""))
         if spec_dict.get("swagger") == "2.0" or swagger_ver.startswith("2."):
-            from langchain_openapi.swagger import SwaggerNormalizer
+            from langchain_openapi_tools.swagger import SwaggerNormalizer
 
             spec_dict = SwaggerNormalizer(spec_dict).normalize()
 
@@ -178,7 +178,7 @@ class OpenAPIParser:
     def __init__(self, spec: OpenAPISpec) -> None:
         swagger_ver = str(spec.raw.get("swagger", ""))
         if spec.raw.get("swagger") == "2.0" or swagger_ver.startswith("2."):
-            from langchain_openapi.swagger import SwaggerNormalizer
+            from langchain_openapi_tools.swagger import SwaggerNormalizer
 
             normalized_raw = SwaggerNormalizer(spec.raw).normalize()
             spec = OpenAPISpec.from_dict(normalized_raw)

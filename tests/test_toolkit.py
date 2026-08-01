@@ -7,7 +7,7 @@ import respx
 from httpx import Response
 from langchain_core.tools import BaseTool
 
-from langchain_openapi import (
+from langchain_openapi_tools import (
     DataType,
     HTTPMethod,
     LangChainToolFactory,
@@ -253,7 +253,7 @@ def test_toolkit_config_description_modes() -> None:
         ],
     )
 
-    from langchain_openapi.toolkit import OpenAPIToolkitConfig
+    from langchain_openapi_tools.toolkit import OpenAPIToolkitConfig
 
     # Minimal
     config_minimal = OpenAPIToolkitConfig(description_mode="minimal")
@@ -285,7 +285,7 @@ def test_toolkit_config_overrides_and_callback() -> None:
         summary="Default summary",
     )
 
-    from langchain_openapi.toolkit import OpenAPIToolkitConfig
+    from langchain_openapi_tools.toolkit import OpenAPIToolkitConfig
 
     # Overrides
     config_override = OpenAPIToolkitConfig(
@@ -315,7 +315,7 @@ def test_toolkit_config_compression() -> None:
         description="Search scholarly papers.",
     )
 
-    from langchain_openapi.toolkit import OpenAPIToolkitConfig
+    from langchain_openapi_tools.toolkit import OpenAPIToolkitConfig
 
     config = OpenAPIToolkitConfig(compress_descriptions=True)
     desc = build_tool_description(op, config=config)

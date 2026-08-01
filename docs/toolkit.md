@@ -9,7 +9,7 @@
 ### Load from Remote URL
 
 ```python
-from langchain_openapi import OpenAPIToolkit
+from langchain_openapi_tools import OpenAPIToolkit
 
 toolkit = OpenAPIToolkit.from_url(
     "https://api.crossref.org/swagger-docs",

@@ -998,7 +998,7 @@
 <hr />
 <h2 id="1-load-an-openapi-specification">1. Load an OpenAPI Specification</h2>
 <p><code>OpenAPIToolkit</code> provides convenient class methods to load specs from URLs, local files, or raw dictionaries.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Load from URL</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="s2">&quot;https://api.crossref.org/swagger-docs&quot;</span><span class="p">)</span>
@@ -1036,7 +1036,7 @@
 <hr />
 <h2 id="4-bind-tools-to-a-langchain-agent">4. Bind Tools to a LangChain Agent</h2>
 <p>Bind generated tools to an agent or LLM framework:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="s2">&quot;https://api.crossref.org/swagger-docs&quot;</span><span class="p">)</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">tools</span> <span class="o">=</span> <span class="n">toolkit</span><span class="o">.</span><span class="n">get_tools</span><span class="p">()</span>

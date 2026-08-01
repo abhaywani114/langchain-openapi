@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from langchain_openapi import (
+from langchain_openapi_tools import (
     DataType,
     HTTPMethod,
     OpenAPILoader,

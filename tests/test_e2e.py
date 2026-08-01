@@ -7,7 +7,7 @@ import pytest
 import respx
 from langchain_core.tools import BaseTool
 
-from langchain_openapi import (
+from langchain_openapi_tools import (
     BearerAuthProvider,
     CacheMiddleware,
     LoggingMiddleware,

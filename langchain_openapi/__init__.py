@@ -1,147 +1,19 @@
-"""LangChain OpenAPI package.
+"""Compatibility wrapper for langchain_openapi.
 
-Provides utilities for loading, parsing, converting OpenAPI specifications,
-executing HTTP requests asynchronously, configuring request providers,
-applying production middleware, and exporting dynamic LangChain tools.
+Importing from 'langchain_openapi' is deprecated. Please use 'langchain_openapi_tools'.
 """
 
-from langchain_openapi.enums import DataType, HTTPMethod, ParameterLocation
-from langchain_openapi.exceptions import (
-    AuthenticationError,
-    ExecutionTimeoutError,
-    HTTPExecutionError,
-    InvalidSpecError,
-    OpenAPIError,
-    ProviderError,
-    RequestValidationError,
-    ResponseParsingError,
-    SpecLoadError,
-    UnsupportedVersionError,
-)
-from langchain_openapi.executor import (
-    AsyncHTTPExecutor,
-    BuiltRequest,
-    RequestBuilder,
-    ResponseData,
-    ResponseParser,
-    create_async_client,
-)
-from langchain_openapi.loader import OpenAPILoader
-from langchain_openapi.middleware import (
-    CacheBackend,
-    CacheMiddleware,
-    InMemoryCacheBackend,
-    LoggingMiddleware,
-    Middleware,
-    MiddlewarePipeline,
-    NextCallable,
-    PaginationMiddleware,
-    RateLimitMiddleware,
-    RetryMiddleware,
-)
-from langchain_openapi.models import (
-    MediaType,
-    Operation,
-    Parameter,
-    RequestBody,
-    Response,
-    Schema,
-)
-from langchain_openapi.parser import (
-    OpenAPIParser,
-    OpenAPISpec,
-    ReferenceResolver,
-    generate_fallback_operation_name,
-)
-from langchain_openapi.providers import (
-    APIKeyHeaderProvider,
-    APIKeyQueryProvider,
-    BasicAuthProvider,
-    BearerAuthProvider,
-    CompositeProvider,
-    CookiesProvider,
-    NoAuthProvider,
-    RequestProvider,
-    StaticHeadersProvider,
-)
-from langchain_openapi.schema_converter import (
-    PydanticFactory,
-    SchemaConverter,
-    map_schema_type_to_python,
-)
-from langchain_openapi.swagger import SwaggerNormalizer
-from langchain_openapi.toolkit import (
-    LangChainToolFactory,
-    OpenAPIToolCallbackHandler,
-    OpenAPIToolkit,
-    OpenAPIToolkitConfig,
-    build_tool_description,
-    format_tool_name,
-)
-from langchain_openapi.utils import sanitize_request_log
+import warnings
 
-__version__ = "1.0.0"
+import langchain_openapi_tools
+from langchain_openapi_tools import *  # noqa: F403
 
-__all__ = [
-    "APIKeyHeaderProvider",
-    "APIKeyQueryProvider",
-    "AsyncHTTPExecutor",
-    "AuthenticationError",
-    "BasicAuthProvider",
-    "BearerAuthProvider",
-    "BuiltRequest",
-    "CacheBackend",
-    "CacheMiddleware",
-    "CompositeProvider",
-    "CookiesProvider",
-    "DataType",
-    "ExecutionTimeoutError",
-    "HTTPExecutionError",
-    "HTTPMethod",
-    "InMemoryCacheBackend",
-    "InvalidSpecError",
-    "LangChainToolFactory",
-    "LoggingMiddleware",
-    "MediaType",
-    "Middleware",
-    "MiddlewarePipeline",
-    "NextCallable",
-    "NoAuthProvider",
-    "OpenAPIError",
-    "OpenAPILoader",
-    "OpenAPIParser",
-    "OpenAPISpec",
-    "OpenAPIToolCallbackHandler",
-    "OpenAPIToolkit",
-    "OpenAPIToolkitConfig",
-    "Operation",
-    "PaginationMiddleware",
-    "Parameter",
-    "ParameterLocation",
-    "ProviderError",
-    "PydanticFactory",
-    "RateLimitMiddleware",
-    "ReferenceResolver",
-    "RequestBody",
-    "RequestBuilder",
-    "RequestProvider",
-    "RequestValidationError",
-    "Response",
-    "ResponseData",
-    "ResponseParser",
-    "ResponseParsingError",
-    "RetryMiddleware",
-    "Schema",
-    "SchemaConverter",
-    "SpecLoadError",
-    "StaticHeadersProvider",
-    "SwaggerNormalizer",
-    "UnsupportedVersionError",
-    "__version__",
-    "build_tool_description",
-    "create_async_client",
-    "format_tool_name",
-    "generate_fallback_operation_name",
-    "map_schema_type_to_python",
-    "sanitize_request_log",
-]
+warnings.warn(
+    "Importing from 'langchain_openapi' is deprecated. "
+    "Please use 'langchain_openapi_tools' instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+__all__ = langchain_openapi_tools.__all__
+__version__ = langchain_openapi_tools.__version__

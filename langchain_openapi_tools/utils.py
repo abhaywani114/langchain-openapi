@@ -6,7 +6,7 @@ from typing import Any
 
 import yaml
 
-from langchain_openapi.exceptions import (
+from langchain_openapi_tools.exceptions import (
     InvalidSpecError,
     SpecLoadError,
     UnsupportedVersionError,

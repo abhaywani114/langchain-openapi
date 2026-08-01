@@ -1,3 +1,3 @@
 # OpenAPILoader API Reference
 
-::: langchain_openapi.loader.OpenAPILoader
+::: langchain_openapi_tools.loader.OpenAPILoader

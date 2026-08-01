@@ -3,7 +3,7 @@
 import asyncio
 from pathlib import Path
 
-from langchain_openapi import LoggingMiddleware, OpenAPIToolkit
+from langchain_openapi_tools import LoggingMiddleware, OpenAPIToolkit
 
 
 async def main() -> None:

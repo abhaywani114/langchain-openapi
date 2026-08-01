@@ -23,7 +23,7 @@ Response ◄── Middleware 1 ◄── Middleware 2 ◄───────�
 Handles network transport exceptions and transient HTTP error status codes (429, 500, 502, 503, 504) with configurable backoff strategies.
 
 ```python
-from langchain_openapi import OpenAPIToolkit, RetryMiddleware
+from langchain_openapi_tools import OpenAPIToolkit, RetryMiddleware
 
 retry_mw = RetryMiddleware(
     retries=3,
@@ -43,7 +43,7 @@ toolkit = OpenAPIToolkit.from_url(
 Enforces global request rate limits across all tools using a token bucket algorithm.
 
 ```python
-from langchain_openapi import OpenAPIToolkit, RateLimitMiddleware
+from langchain_openapi_tools import OpenAPIToolkit, RateLimitMiddleware
 
 rate_mw = RateLimitMiddleware(requests_per_second=10.0)
 
@@ -58,7 +58,11 @@ toolkit = OpenAPIToolkit.from_url(
 Caches `GET` response payloads with TTL expiration.
 
 ```python
-from langchain_openapi import CacheMiddleware, InMemoryCacheBackend, OpenAPIToolkit
+from langchain_openapi_tools import (
+    CacheMiddleware,
+    InMemoryCacheBackend,
+    OpenAPIToolkit,
+)
 
 cache_mw = CacheMiddleware(
     ttl=300.0,
@@ -77,7 +81,7 @@ toolkit = OpenAPIToolkit.from_url(
 Automatically aggregates multi-page API responses when a tool is invoked with `__paginate__=True`.
 
 ```python
-from langchain_openapi import OpenAPIToolkit, PaginationMiddleware
+from langchain_openapi_tools import OpenAPIToolkit, PaginationMiddleware
 
 pag_mw = PaginationMiddleware(max_pages=5, max_items=500)
 
@@ -95,7 +99,7 @@ toolkit = OpenAPIToolkit.from_url(
 Logs outgoing request URLs and incoming response status codes with automatic sensitive header/credential redaction.
 
 ```python
-from langchain_openapi import LoggingMiddleware, OpenAPIToolkit
+from langchain_openapi_tools import LoggingMiddleware, OpenAPIToolkit
 
 log_mw = LoggingMiddleware()
 

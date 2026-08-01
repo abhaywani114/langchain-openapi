@@ -11,7 +11,7 @@
 Injects an `Authorization: Bearer <TOKEN>` header.
 
 ```python
-from langchain_openapi import BearerAuthProvider, OpenAPIToolkit
+from langchain_openapi_tools import BearerAuthProvider, OpenAPIToolkit
 
 toolkit = OpenAPIToolkit.from_url(
     "https://api.github.com/openapi",
@@ -24,7 +24,7 @@ toolkit = OpenAPIToolkit.from_url(
 Injects an API key in a designated request header.
 
 ```python
-from langchain_openapi import APIKeyHeaderProvider, OpenAPIToolkit
+from langchain_openapi_tools import APIKeyHeaderProvider, OpenAPIToolkit
 
 toolkit = OpenAPIToolkit.from_url(
     "https://api.example.com/spec.json",
@@ -37,7 +37,7 @@ toolkit = OpenAPIToolkit.from_url(
 Appends an API key as a query parameter.
 
 ```python
-from langchain_openapi import APIKeyQueryProvider, OpenAPIToolkit
+from langchain_openapi_tools import APIKeyQueryProvider, OpenAPIToolkit
 
 toolkit = OpenAPIToolkit.from_url(
     "https://api.example.com/spec.json",
@@ -50,7 +50,7 @@ toolkit = OpenAPIToolkit.from_url(
 Injects HTTP Basic Authentication credentials.
 
 ```python
-from langchain_openapi import BasicAuthProvider, OpenAPIToolkit
+from langchain_openapi_tools import BasicAuthProvider, OpenAPIToolkit
 
 toolkit = OpenAPIToolkit.from_url(
     "https://api.example.com/spec.json",
@@ -65,7 +65,7 @@ toolkit = OpenAPIToolkit.from_url(
 Chain multiple request providers sequentially using `CompositeProvider`:
 
 ```python
-from langchain_openapi import (
+from langchain_openapi_tools import (
     BearerAuthProvider,
     CompositeProvider,
     CookiesProvider,
