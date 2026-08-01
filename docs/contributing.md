@@ -8,7 +8,7 @@ Thank you for considering contributing to `langchain-openapi`!
 
 1. **Clone repository**:
    ```bash
-   git clone https://github.com/langchain-ai/langchain-openapi.git
+   git clone https://github.com/abhaywani114/langchain-openapi.git
    cd langchain-openapi
    ```
 

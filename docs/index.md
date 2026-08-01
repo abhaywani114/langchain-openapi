@@ -1,4 +1,4 @@
-# langchain-openapi
+# langchain-openapi-tools
 
 > Convert OpenAPI specifications into native, production-grade LangChain tools for AI agents.
 

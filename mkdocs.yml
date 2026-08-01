@@ -1,4 +1,4 @@
-site_name: langchain-openapi
+site_name: langchain-openapi-tools
 site_description: Convert OpenAPI v3.0 & v3.1 specifications into native, type-safe LangChain tools for AI agents.
 site_url: https://github.com/abhaywani114/langchain-openapi
 
