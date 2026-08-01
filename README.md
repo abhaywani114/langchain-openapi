@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <em>Convert OpenAPI v3.0 & v3.1 specifications into native, production-grade LangChain tools.</em>
+  <em>Convert OpenAPI v3.0 & v3.1 and Swagger 2.0 specifications into native, production-grade LangChain tools.</em>
 </p>
 
 <p align="center">
@@ -21,15 +21,39 @@
 
 ---
 
-`langchain_openapi` is a modern Python library designed to seamlessly convert OpenAPI v3.0 and v3.1 specifications into native, type-safe [LangChain](https://github.com/langchain-ai/langchain) tools for AI agents and LLM applications.
+`langchain_openapi` is a modern Python library designed to seamlessly convert OpenAPI v3.0, v3.1, and Swagger 2.0 specifications into native, type-safe [LangChain](https://github.com/langchain-ai/langchain) tools for AI agents and LLM applications.
 
-No python code generation is required—tools are generated dynamically at runtime with strict Pydantic input schemas and production-ready middleware.
+No python code generation is required—tools are generated dynamically at runtime with strict Pydantic input schemas, prompt optimization options, and production-ready middleware.
+
+---
+
+## Installation & Importing
+
+Install the PyPI package:
+
+```bash
+pip install langchain-openapi-tools
+# or using uv
+uv add langchain-openapi-tools
+```
+
+Import in Python:
+
+```python
+from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
+```
+
+> **Note on Package Naming:**
+> The PyPI distribution package name is **`langchain-openapi-tools`**, whereas the Python import module name is **`langchain_openapi`**.
+> This distinction is common in Python packages (e.g. `beautifulsoup4` → `import bs4`, `opencv-python` → `import cv2`).
 
 ---
 
 ## Features
 
 - ⚡ **Zero-Code Tool Generation**: Runtime conversion of OpenAPI specs (YAML/JSON) into LangChain `StructuredTool`s.
+- 🚀 **Swagger 2.0 & OpenAPI 3.x**: Native normalization of legacy Swagger 2.0 and modern OpenAPI 3.0/3.1 specs.
+- 🗜️ **Prompt Optimization & Filtering**: Description modes (`full`, `compact`, `minimal`), description compression, overrides, callbacks, and operation/tag filtering to drastically reduce context window usage.
 - 🔒 **Pluggable Authentication**: Built-in support for Bearer Tokens, API Key Headers, Query Parameters, Basic Auth, and custom request providers.
 - 🛡️ **Production Middleware**: Composable middleware architecture for Retries (exponential backoff), Rate Limiting (token-bucket), Caching (TTL), Pagination aggregation, and Sanitized Logging.
 - 🎯 **Type-Safe Validation**: Dynamically generated Pydantic input schemas ensure LLM arguments adhere strictly to specification types before network transport.
@@ -42,6 +66,121 @@ No python code generation is required—tools are generated dynamically at runti
 - ✅ **Swagger 2.0** (Automatically normalized to OpenAPI 3.0)
 - ✅ **OpenAPI 3.0.x** (JSON and YAML)
 - ✅ **OpenAPI 3.1.x** (JSON and YAML)
+
+---
+
+## Quick Start
+
+```python
+from langchain_openapi import OpenAPIToolkit
+
+# Load spec from remote URL or local file
+toolkit = OpenAPIToolkit.from_url("https://api.crossref.org/swagger-docs")
+
+# Extract generated tools
+tools = toolkit.get_tools()
+
+print(f"Generated {len(tools)} tools:")
+for tool in tools[:3]:
+    print(f"- {tool.name}: {tool.description}")
+```
+
+### Agent Integration
+
+```python
+import asyncio
+from langchain_openapi import OpenAPIToolkit
+
+
+async def main():
+    toolkit = OpenAPIToolkit.from_url("https://api.crossref.org/swagger-docs")
+    search_tool = toolkit.get_tool("get_works")
+
+    if search_tool:
+        result = await search_tool.ainvoke({"query": "LangGraph"})
+        print("Search Result:", result)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+---
+
+## Prompt Optimization & Tool Customization
+
+Large OpenAPI specifications can generate extensive tool descriptions that exceed model context windows. `langchain_openapi` provides full control over description generation and context footprint.
+
+### Configuration Object (`OpenAPIToolkitConfig`)
+
+```python
+from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
+
+config = OpenAPIToolkitConfig(
+    description_mode="compact",
+    compress_descriptions=True,
+    include_tags=["Works"],
+    tool_description_overrides={
+        "get_works": "Search scholarly papers registered with Crossref."
+    },
+)
+
+toolkit = OpenAPIToolkit.from_url(
+    "https://api.crossref.org/swagger-docs", config=config
+)
+```
+
+### Description Modes (`description_mode`)
+
+- `full` *(default)*: Complete summary, description, HTTP method, path, and schema parameter details.
+- `compact`: Summary and short parameter list without response schemas or redundant examples.
+- `minimal`: A single-sentence summary ideal for large specifications with dozens of tools.
+
+```python
+toolkit = OpenAPIToolkit.from_url(url, description_mode="minimal")
+```
+
+### Description Compression (`compress_descriptions=True`)
+
+Removes duplicate text, redundant whitespace, and empty sections without altering tool semantics:
+
+```python
+toolkit = OpenAPIToolkit.from_url(url, compress_descriptions=True)
+```
+
+### Custom Overrides & Callbacks
+
+Override descriptions for specific tools:
+
+```python
+toolkit = OpenAPIToolkit.from_url(
+    url, tool_description_overrides={"get_works": "Search scholarly papers."}
+)
+```
+
+Or pass a custom builder callback:
+
+```python
+def my_builder(operation):
+    return f"Execute {operation.name} on path {operation.path}."
+
+
+toolkit = OpenAPIToolkit.from_url(url, description_builder=my_builder)
+```
+
+### Operation Filtering
+
+Filter tools before they are created to reduce context window overhead:
+
+```python
+# Filter by Tags
+toolkit = OpenAPIToolkit.from_url(url, include_tags=["Works"], exclude_tags=["Admin"])
+
+# Filter by Operations
+toolkit = OpenAPIToolkit.from_url(
+    url, include_operations=["get_works"], exclude_operations=["delete_work"]
+)
+```
 
 ---
 
@@ -71,196 +210,3 @@ No python code generation is required—tools are generated dynamically at runti
                      ▼
           LangChain StructuredTools
 ```
-
-## Quick Start
-
-### Installation
-
-```bash
-uv add langchain-openapi-tools
-# or
-pip install langchain-openapi-tools
-```
-
-### Basic Usage
-
-```python
-from langchain_openapi import OpenAPIToolkit
-
-# Load spec from remote URL or local file
-toolkit = OpenAPIToolkit.from_url("https://api.crossref.org/swagger-docs")
-
-# Extract generated tools
-tools = toolkit.get_tools()
-
-print(f"Generated {len(tools)} tools:")
-for tool in tools[:3]:
-    print(f"- {tool.name}: {tool.description}")
-```
-
-### Agent Integration
-
-```python
-import asyncio
-from langchain_openapi import OpenAPIToolkit
-
-
-async def main():
-    toolkit = OpenAPIToolkit.from_url("https://api.crossref.org/swagger-docs")
-    search_tool = toolkit.get_tool("search_works")
-
-    if search_tool:
-        result = await search_tool.ainvoke({"query": "LangGraph"})
-        print("Search Result:", result)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
----
-
-## Architecture
-
-```text
-OpenAPI Specification (JSON / YAML)
-             │
-             ▼
-      OpenAPILoader
-             │
-             ▼
-       OpenAPIParser ───► ReferenceResolver ($ref)
-             │
-             ▼
-     SchemaConverter ───► Dynamic Pydantic Input Models
-             │
-             ▼
-   LangChainToolFactory ───► LangChain StructuredTool
-             │
-             ▼
-     AsyncHTTPExecutor
-             │
-             ▼
-    Middleware Pipeline (Retry, RateLimit, Cache, Pagination, Logging)
-             │
-             ▼
-    Request Providers (Authentication & Custom Headers)
-             │
-             ▼
-        httpx.AsyncClient (HTTP Target API)
-```
-
----
-
-## Authentication Methods
-
-`langchain_openapi` supports pluggable authentication via `RequestProvider` classes:
-
-```python
-from langchain_openapi import (
-    APIKeyHeaderProvider,
-    BasicAuthProvider,
-    BearerAuthProvider,
-    CompositeProvider,
-    OpenAPIToolkit,
-)
-
-# 1. Bearer Token Auth
-toolkit_bearer = OpenAPIToolkit.from_url(
-    "https://api.github.com/openapi",
-    provider=BearerAuthProvider(token="secret_token"),
-)
-
-# 2. API Key Header Auth
-toolkit_apikey = OpenAPIToolkit.from_url(
-    "https://api.example.com/spec.json",
-    provider=APIKeyHeaderProvider(key="secret_key", header="X-API-Key"),
-)
-
-# 3. Composite Provider (Multiple authentication schemes)
-composite = CompositeProvider(
-    [
-        BearerAuthProvider(token="secret_jwt"),
-        APIKeyHeaderProvider(key="secret_key", header="X-API-Key"),
-    ]
-)
-
-toolkit_composite = OpenAPIToolkit.from_url(
-    "https://api.example.com/spec.json",
-    provider=composite,
-)
-```
-
----
-
-## Production Middleware & Resilience
-
-Intercept requests and responses to apply cross-cutting resilience concerns:
-
-```python
-from langchain_openapi import (
-    CacheMiddleware,
-    LoggingMiddleware,
-    OpenAPIToolkit,
-    PaginationMiddleware,
-    RateLimitMiddleware,
-    RetryMiddleware,
-)
-
-toolkit = OpenAPIToolkit.from_url(
-    "https://api.example.com/openapi.json",
-    middleware=[
-        LoggingMiddleware(),
-        RetryMiddleware(retries=3, backoff="exponential"),
-        RateLimitMiddleware(requests_per_second=10.0),
-        CacheMiddleware(ttl=300.0),
-        PaginationMiddleware(max_pages=10),
-    ],
-)
-```
-
----
-
-## Example Applications
-
-Runnable example projects are located in `examples/`:
-
-- 📚 [`examples/crossref`](examples/crossref/): Academic works search via Crossref API.
-- 🐙 [`examples/github`](examples/github/): Repository search via GitHub REST API with Bearer Token.
-- 🐶 [`examples/petstore`](examples/petstore/): Pet store management using Swagger Petstore.
-- 📝 [`examples/jsonplaceholder`](examples/jsonplaceholder/): REST resource querying with caching.
-
----
-
-## Roadmap
-
-- ✅ **Milestone 1**: Project Foundation & Tooling
-- ✅ **Milestone 2**: OpenAPI Specification Loader
-- ✅ **Milestone 3**: OpenAPI Parser & Data Models
-- ✅ **Milestone 4**: Dynamic Pydantic Schema Converter
-- ✅ **Milestone 5**: Async HTTP Executor Engine
-- ✅ **Milestone 6**: LangChain Tool Factory & Toolkit
-- ✅ **Milestone 7**: Authentication & Request Providers
-- ✅ **Milestone 8**: Production Middleware & Resilience Pipeline
-- ✅ **Milestone 9**: Open Source Readiness & Documentation
-- ⏳ **Milestone 10**: v1.0 Release Candidate & PyPI Publish
-
----
-
-## Development & Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on code style, testing, and pull request procedures.
-
-```bash
-# Sync virtual environment
-uv sync --extra dev
-
-# Run all checks (format, lint, mypy, pytest, docs build, benchmark)
-make all
-```
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

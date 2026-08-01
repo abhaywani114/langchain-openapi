@@ -74,6 +74,7 @@ from langchain_openapi.toolkit import (
     LangChainToolFactory,
     OpenAPIToolCallbackHandler,
     OpenAPIToolkit,
+    OpenAPIToolkitConfig,
     build_tool_description,
     format_tool_name,
 )
@@ -112,6 +113,7 @@ __all__ = [
     "OpenAPISpec",
     "OpenAPIToolCallbackHandler",
     "OpenAPIToolkit",
+    "OpenAPIToolkitConfig",
     "Operation",
     "PaginationMiddleware",
     "Parameter",

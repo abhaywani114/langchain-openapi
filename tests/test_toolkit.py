@@ -232,3 +232,139 @@ def test_toolkit_get_tool_by_name() -> None:
         toolkit.get_tool("non_existent_tool")
 
     assert "Tool 'non_existent_tool' not found in toolkit" in str(exc_info.value)
+
+
+def test_toolkit_config_description_modes() -> None:
+    """Test description_mode options: full, compact, minimal."""
+    op = Operation(
+        name="get_works",
+        method=HTTPMethod.GET,
+        path="/works",
+        operation_id="getWorks",
+        summary="Search scholarly papers.",
+        description="Returns list of works registered in Crossref.",
+        parameters=[
+            Parameter(
+                name="query",
+                location=ParameterLocation.QUERY,
+                required=True,
+                schema=Schema(type=DataType.STRING),
+            )
+        ],
+    )
+
+    from langchain_openapi.toolkit import OpenAPIToolkitConfig
+
+    # Minimal
+    config_minimal = OpenAPIToolkitConfig(description_mode="minimal")
+    desc_min = build_tool_description(op, config=config_minimal)
+    assert desc_min == "Search scholarly papers."
+
+    # Compact
+    config_compact = OpenAPIToolkitConfig(description_mode="compact")
+    desc_compact = build_tool_description(op, config=config_compact)
+    assert "Search scholarly papers." in desc_compact
+    assert "Parameters: query (query, required)" in desc_compact
+    assert "HTTP Method:" not in desc_compact
+
+    # Full
+    config_full = OpenAPIToolkitConfig(description_mode="full")
+    desc_full = build_tool_description(op, config=config_full)
+    assert "Search scholarly papers." in desc_full
+    assert "Returns list of works registered in Crossref." in desc_full
+    assert "HTTP Method: GET" in desc_full
+
+
+def test_toolkit_config_overrides_and_callback() -> None:
+    """Test tool description overrides and custom builder callback."""
+    op = Operation(
+        name="get_works",
+        method=HTTPMethod.GET,
+        path="/works",
+        operation_id="getWorks",
+        summary="Default summary",
+    )
+
+    from langchain_openapi.toolkit import OpenAPIToolkitConfig
+
+    # Overrides
+    config_override = OpenAPIToolkitConfig(
+        tool_description_overrides={"get_works": "Search scholarly papers."}
+    )
+    desc_override = build_tool_description(
+        op, tool_name="get_works", config=config_override
+    )
+    assert desc_override == "Search scholarly papers."
+
+    # Callback
+    def custom_builder(operation: Operation) -> str:
+        return f"Custom builder for {operation.path}"
+
+    config_callback = OpenAPIToolkitConfig(description_builder=custom_builder)
+    desc_cb = build_tool_description(op, config=config_callback)
+    assert desc_cb == "Custom builder for /works"
+
+
+def test_toolkit_config_compression() -> None:
+    """Test description prompt compression."""
+    op = Operation(
+        name="get_works",
+        method=HTTPMethod.GET,
+        path="/works",
+        summary="Search scholarly papers.",
+        description="Search scholarly papers.",
+    )
+
+    from langchain_openapi.toolkit import OpenAPIToolkitConfig
+
+    config = OpenAPIToolkitConfig(compress_descriptions=True)
+    desc = build_tool_description(op, config=config)
+    lines = desc.splitlines()
+    assert lines.count("Search scholarly papers.") == 1
+
+
+def test_toolkit_config_operation_filtering() -> None:
+    """Test filtering operations via OpenAPIToolkitConfig."""
+    spec_dict: dict[str, Any] = {
+        "openapi": "3.0.3",
+        "info": {"title": "Filtered API", "version": "1.0.0"},
+        "paths": {
+            "/works": {
+                "get": {
+                    "operationId": "getWorks",
+                    "tags": ["Works"],
+                    "responses": {"200": {"description": "OK"}},
+                }
+            },
+            "/members": {
+                "get": {
+                    "operationId": "getMembers",
+                    "tags": ["Members"],
+                    "responses": {"200": {"description": "OK"}},
+                }
+            },
+            "/admin": {
+                "delete": {
+                    "operationId": "deleteAdmin",
+                    "tags": ["Admin"],
+                    "responses": {"200": {"description": "OK"}},
+                }
+            },
+        },
+    }
+
+    # 1. include_tags
+    tk1 = OpenAPIToolkit.from_dict(spec_dict, include_tags=["Works"])
+    assert tk1.list_tools() == ["get_works"]
+
+    # 2. exclude_tags
+    tk2 = OpenAPIToolkit.from_dict(spec_dict, exclude_tags=["Admin"])
+    assert set(tk2.list_tools()) == {"get_works", "get_members"}
+
+    # 3. include_operations
+    tk3 = OpenAPIToolkit.from_dict(spec_dict, include_operations=["get_members"])
+    assert tk3.list_tools() == ["get_members"]
+
+    # 4. exclude_operations
+    tk4 = OpenAPIToolkit.from_dict(spec_dict, exclude_operations=["delete_admin"])
+    assert set(tk4.list_tools()) == {"get_works", "get_members"}

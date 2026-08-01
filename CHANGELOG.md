@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.2] - 2026-08-01
+
+### Fixed
+- **Base URL Generation**: Fixed Swagger 2.0 base URL generation (e.g. Crossref host/basePath/schemes resolution) to prevent relative URL execution errors.
+- **URL Resolution**: Updated `RequestBuilder` to use `urllib.parse.urljoin` for safe URL concatenation.
+
+### Added
+- **Package Naming Clarification**: Clarified PyPI package name (`langchain-openapi-tools`) vs import module name (`langchain_openapi`) across documentation.
+- **Prompt Optimization & Config**: Introduced `OpenAPIToolkitConfig` for user-controlled description modes (`full`, `compact`, `minimal`) and description prompt compression (`compress_descriptions=True`).
+- **Tool Description Customization**: Added `tool_description_overrides` dict and custom `description_builder` callback functions.
+- **Operation & Tag Filtering**: Added tag filtering (`include_tags`, `exclude_tags`) and operation filtering (`include_operations`, `exclude_operations`) at initial toolkit construction level.
+
+---
+
 ## [1.0.0] - 2026-08-01
 
 ### Added

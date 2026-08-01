@@ -213,3 +213,35 @@ def test_swagger_loader_file_integration(tmp_path: Any) -> None:
 
     assert spec.title == "File Swagger API"
     assert spec.servers == ["http://localhost:8000"]
+
+
+def test_swagger_base_url_generation() -> None:
+    """Test end-to-end base URL generation for Swagger 2.0 specs."""
+    crossref_swagger: dict[str, Any] = {
+        "swagger": "2.0",
+        "info": {"title": "Crossref API", "version": "1.0.0"},
+        "host": "api.crossref.org",
+        "basePath": "/",
+        "schemes": ["https"],
+        "paths": {
+            "/works": {
+                "get": {
+                    "summary": "Search works",
+                    "operationId": "getWorks",
+                    "responses": {"200": {"description": "Works response"}},
+                }
+            }
+        },
+    }
+
+    toolkit = OpenAPIToolkit.from_dict(crossref_swagger)
+    assert toolkit.spec.servers == ["https://api.crossref.org"]
+
+    from langchain_openapi.parser import OpenAPIParser
+
+    parser = OpenAPIParser(toolkit.spec)
+    ops = parser.parse()
+    assert len(ops) == 1
+
+    built_req = toolkit.executor._builder.build(ops[0], {})
+    assert built_req.url == "https://api.crossref.org/works"

@@ -57,27 +57,34 @@ class SwaggerNormalizer:
         return normalized
 
     def _convert_servers(self, spec: dict[str, Any]) -> list[dict[str, str]]:
-        host = spec.get("host", "").strip()
-        base_path = spec.get("basePath", "").strip()
+        host = str(spec.get("host", "")).strip()
+        base_path = str(spec.get("basePath", "")).strip()
         schemes = spec.get("schemes", [])
 
-        if not isinstance(schemes, list) or not schemes:
-            schemes = ["https"]
-
-        if not base_path.startswith("/"):
-            base_path = f"/{base_path}" if base_path else ""
-        if base_path == "/":
-            base_path = ""
-
-        servers: list[dict[str, str]] = []
         if host:
-            for scheme in schemes:
-                url = f"{scheme}://{host}{base_path}"
-                servers.append({"url": url})
-        elif base_path:
-            servers.append({"url": base_path})
+            if "://" in host:
+                scheme_part, host_part = host.split("://", 1)
+                schemes = [scheme_part]
+                host = host_part
 
-        return servers
+            if not isinstance(schemes, list) or not schemes:
+                schemes = ["https"]
+
+            if base_path == "/":
+                base_path = ""
+            elif base_path and not base_path.startswith("/"):
+                base_path = f"/{base_path}"
+
+            servers: list[dict[str, str]] = []
+            for scheme in schemes:
+                url = f"{scheme}://{host}{base_path}".rstrip("/")
+                servers.append({"url": url})
+            return servers
+        elif base_path:
+            base_path_clean = base_path.rstrip("/")
+            if base_path_clean:
+                return [{"url": base_path_clean}]
+        return []
 
     def _convert_components(self, spec: dict[str, Any]) -> dict[str, Any]:
         components: dict[str, Any] = {}

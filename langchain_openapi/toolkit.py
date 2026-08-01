@@ -3,9 +3,10 @@
 import asyncio
 import logging
 import re
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.tools import BaseTool, StructuredTool, ToolException
@@ -20,6 +21,20 @@ from langchain_openapi.providers import RequestProvider
 from langchain_openapi.schema_converter import SchemaConverter
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class OpenAPIToolkitConfig:
+    """Configuration settings for tool generation and prompt optimization."""
+
+    description_mode: Literal["full", "compact", "minimal"] = "full"
+    compress_descriptions: bool = False
+    include_tags: list[str] | None = None
+    exclude_tags: list[str] | None = None
+    include_operations: list[str] | None = None
+    exclude_operations: list[str] | None = None
+    tool_description_overrides: dict[str, str] | None = None
+    description_builder: Callable[[Operation], str] | None = None
 
 
 class OpenAPIToolCallbackHandler(BaseCallbackHandler):
@@ -63,23 +78,143 @@ def format_tool_name(operation: Operation) -> str:
     return final_name if final_name else "openapi_tool"
 
 
-def build_tool_description(operation: Operation) -> str:
+def compress_description_text(text: str, operation: Operation) -> str:
+    """Compress description by removing duplicated text and whitespace."""
+    lines = [line.strip() for line in text.splitlines()]
+    unique_lines: list[str] = []
+    seen: set[str] = set()
+
+    for line in lines:
+        if not line:
+            continue
+        normalized = line.lower()
+        if normalized in seen:
+            continue
+        if operation.summary and operation.description:
+            summary_clean = operation.summary.strip().lower()
+            if normalized == summary_clean and any(
+                s.lower() == summary_clean for s in seen
+            ):
+                continue
+        seen.add(normalized)
+        unique_lines.append(line)
+
+    return "\n".join(unique_lines)
+
+
+def build_tool_description(
+    operation: Operation,
+    tool_name: str | None = None,
+    config: OpenAPIToolkitConfig | None = None,
+) -> str:
     """Build a human-readable description for an operation tool."""
+    if config is None:
+        config = OpenAPIToolkitConfig()
+
+    op_keys = [operation.name]
+    if operation.operation_id:
+        op_keys.append(operation.operation_id)
+    if tool_name:
+        op_keys.append(tool_name)
+
+    # 1. Custom description overrides
+    if config.tool_description_overrides:
+        for key in op_keys:
+            if key in config.tool_description_overrides:
+                return config.tool_description_overrides[key]
+
+    # 2. Custom builder callback
+    if config.description_builder is not None:
+        return config.description_builder(operation)
+
+    # 3. Description modes
+    mode = config.description_mode
+
+    if mode == "minimal":
+        first_sentence = ""
+        if operation.summary:
+            first_sentence = operation.summary.strip()
+        elif operation.description:
+            first_sentence = operation.description.strip().split(".")[0]
+        else:
+            first_sentence = operation.name.replace("_", " ").title()
+
+        if not first_sentence.endswith("."):
+            first_sentence += "."
+        return first_sentence
+
     parts: list[str] = []
 
-    if operation.summary:
-        summary_clean = operation.summary.strip()
-        if not summary_clean.endswith("."):
-            summary_clean += "."
-        parts.append(summary_clean)
+    if mode == "compact":
+        summary_clean = (operation.summary or operation.description or "").strip()
+        if summary_clean:
+            first_line = summary_clean.split("\n")[0].strip()
+            if not first_line.endswith("."):
+                first_line += "."
+            parts.append(first_line)
+        else:
+            parts.append(f"Execute {operation.method.value.upper()} operation.")
 
-    if operation.description:
-        parts.append(operation.description.strip())
+        if operation.parameters:
+            param_strings = [
+                f"{p.name} ({p.location.value}{', required' if p.required else ''})"
+                for p in operation.parameters
+            ]
+            parts.append(f"Parameters: {', '.join(param_strings)}")
 
-    parts.append(f"HTTP Method: {operation.method.value.upper()}")
-    parts.append(f"Path: {operation.path}")
+    else:  # "full" mode
+        if operation.summary:
+            summary_clean = operation.summary.strip()
+            if not summary_clean.endswith("."):
+                summary_clean += "."
+            parts.append(summary_clean)
 
-    return "\n\n".join(parts)
+        if operation.description:
+            parts.append(operation.description.strip())
+
+        parts.append(f"HTTP Method: {operation.method.value.upper()}")
+        parts.append(f"Path: {operation.path}")
+
+    description_text = "\n\n".join(parts)
+
+    if config.compress_descriptions:
+        description_text = compress_description_text(description_text, operation)
+
+    return description_text
+
+
+def filter_operations(
+    operations: list[Operation],
+    config: OpenAPIToolkitConfig,
+) -> list[Operation]:
+    """Filter list of operations based on configuration rules."""
+    filtered: list[Operation] = []
+
+    for op in operations:
+        tool_name = format_tool_name(op)
+        op_identifiers = {op.name, tool_name}
+        if op.operation_id:
+            op_identifiers.add(op.operation_id)
+
+        if config.include_tags is not None:
+            if not any(t in config.include_tags for t in op.tags):
+                continue
+
+        if config.exclude_tags is not None:
+            if any(t in config.exclude_tags for t in op.tags):
+                continue
+
+        if config.include_operations is not None:
+            if not any(name in config.include_operations for name in op_identifiers):
+                continue
+
+        if config.exclude_operations is not None:
+            if any(name in config.exclude_operations for name in op_identifiers):
+                continue
+
+        filtered.append(op)
+
+    return filtered
 
 
 class LangChainToolFactory:
@@ -89,9 +224,11 @@ class LangChainToolFactory:
         self,
         executor: AsyncHTTPExecutor | None = None,
         schema_converter: SchemaConverter | None = None,
+        config: OpenAPIToolkitConfig | None = None,
     ) -> None:
         self.executor = executor or AsyncHTTPExecutor()
         self.schema_converter = schema_converter or SchemaConverter()
+        self.config = config or OpenAPIToolkitConfig()
 
     def create_tool(
         self,
@@ -99,7 +236,9 @@ class LangChainToolFactory:
         name_override: str | None = None,
     ) -> StructuredTool:
         tool_name = name_override or format_tool_name(operation)
-        description_text = build_tool_description(operation)
+        description_text = build_tool_description(
+            operation, tool_name=tool_name, config=self.config
+        )
         args_schema = self.schema_converter.to_pydantic(operation)
         executor = self.executor
 
@@ -169,7 +308,29 @@ class OpenAPIToolkit:
         middleware: Sequence[Middleware] | None = None,
         timeout: float = 30.0,
         base_url: str | None = None,
+        config: OpenAPIToolkitConfig | None = None,
+        # Direct kwargs for backward compatibility:
+        description_mode: Literal["full", "compact", "minimal"] = "full",
+        compress_descriptions: bool = False,
+        include_tags: list[str] | None = None,
+        exclude_tags: list[str] | None = None,
+        include_operations: list[str] | None = None,
+        exclude_operations: list[str] | None = None,
+        tool_description_overrides: dict[str, str] | None = None,
+        description_builder: Callable[[Operation], str] | None = None,
     ) -> None:
+        if config is None:
+            config = OpenAPIToolkitConfig(
+                description_mode=description_mode,
+                compress_descriptions=compress_descriptions,
+                include_tags=include_tags,
+                exclude_tags=exclude_tags,
+                include_operations=include_operations,
+                exclude_operations=exclude_operations,
+                tool_description_overrides=tool_description_overrides,
+                description_builder=description_builder,
+            )
+        self.config = config
         self.spec = spec
 
         effective_base_url = base_url
@@ -182,10 +343,14 @@ class OpenAPIToolkit:
             middleware=middleware,
             timeout=timeout,
         )
-        self.factory = LangChainToolFactory(executor=self.executor)
+        self.factory = LangChainToolFactory(
+            executor=self.executor,
+            config=self.config,
+        )
 
         parser = OpenAPIParser(spec)
-        operations = parser.parse()
+        raw_operations = parser.parse()
+        operations = filter_operations(raw_operations, self.config)
 
         self._tools_dict: dict[str, BaseTool] = {}
         used_names: set[str] = set()
@@ -213,6 +378,8 @@ class OpenAPIToolkit:
         middleware: Sequence[Middleware] | None = None,
         timeout: float = 30.0,
         base_url: str | None = None,
+        config: OpenAPIToolkitConfig | None = None,
+        **kwargs: Any,
     ) -> "OpenAPIToolkit":
         loader = OpenAPILoader.from_url(url, headers=headers)
         spec = loader.load()
@@ -222,6 +389,8 @@ class OpenAPIToolkit:
             middleware=middleware,
             timeout=timeout,
             base_url=base_url,
+            config=config,
+            **kwargs,
         )
 
     @classmethod
@@ -232,6 +401,8 @@ class OpenAPIToolkit:
         middleware: Sequence[Middleware] | None = None,
         timeout: float = 30.0,
         base_url: str | None = None,
+        config: OpenAPIToolkitConfig | None = None,
+        **kwargs: Any,
     ) -> "OpenAPIToolkit":
         loader = OpenAPILoader.from_file(file_path)
         spec = loader.load()
@@ -241,6 +412,8 @@ class OpenAPIToolkit:
             middleware=middleware,
             timeout=timeout,
             base_url=base_url,
+            config=config,
+            **kwargs,
         )
 
     @classmethod
@@ -251,6 +424,8 @@ class OpenAPIToolkit:
         middleware: Sequence[Middleware] | None = None,
         timeout: float = 30.0,
         base_url: str | None = None,
+        config: OpenAPIToolkitConfig | None = None,
+        **kwargs: Any,
     ) -> "OpenAPIToolkit":
         loader = OpenAPILoader.from_dict(spec_dict)
         spec = loader.load()
@@ -260,6 +435,8 @@ class OpenAPIToolkit:
             middleware=middleware,
             timeout=timeout,
             base_url=base_url,
+            config=config,
+            **kwargs,
         )
 
     @classmethod
@@ -270,6 +447,8 @@ class OpenAPIToolkit:
         middleware: Sequence[Middleware] | None = None,
         timeout: float = 30.0,
         base_url: str | None = None,
+        config: OpenAPIToolkitConfig | None = None,
+        **kwargs: Any,
     ) -> "OpenAPIToolkit":
         return cls(
             spec=spec,
@@ -277,6 +456,8 @@ class OpenAPIToolkit:
             middleware=middleware,
             timeout=timeout,
             base_url=base_url,
+            config=config,
+            **kwargs,
         )
 
     def list_tools(self) -> list[str]:

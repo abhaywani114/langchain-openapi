@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://github.com/abhaywani114/langchain-openapi/middleware/">
+        <link rel="canonical" href="https://github.com/abhaywani114/langchain-openapi/prompt_optimization/">
       
       
-        <link rel="prev" href="../authentication/">
+        <link rel="prev" href="../quickstart/">
       
       
-        <link rel="next" href="../toolkit/">
+        <link rel="next" href="../architecture/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Middleware - langchain-openapi-tools</title>
+        <title>Prompt Optimization - langchain-openapi-tools</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#production-middleware-pipeline" class="md-skip">
+        <a href="#prompt-optimization-context-window-management" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Middleware
+              Prompt Optimization
             
           </span>
         </div>
@@ -340,10 +340,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../prompt_optimization/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt Optimization
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -359,6 +386,176 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-openapitoolkitconfig-configuration-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The OpenAPIToolkitConfig Configuration Object
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tool-description-modes-description_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool Description Modes (description_mode)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tool Description Modes (description_mode)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-full-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. full (Default)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-compact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. compact
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-minimal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#description-compression-compress_descriptionstrue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description Compression (compress_descriptions=True)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#description-overrides-callback-builders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description Overrides &amp; Callback Builders
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Description Overrides &amp; Callback Builders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tool-description-overrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool Description Overrides
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-builder-callback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Builder Callback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation-tag-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation &amp; Tag Filtering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operation &amp; Tag Filtering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filter-by-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter by Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filter-by-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter by Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -421,37 +618,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Middleware
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../middleware/" class="md-nav__link">
         
   
   
@@ -467,109 +637,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Overview
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#built-in-middleware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Built-in Middleware
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Built-in Middleware">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-retry-middleware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Retry Middleware
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-rate-limit-middleware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Rate Limit Middleware
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-cache-middleware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Cache Middleware
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-pagination-middleware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Pagination Middleware
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-logging-middleware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Logging Middleware
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -969,10 +1036,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#the-openapitoolkitconfig-configuration-object" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        The OpenAPIToolkitConfig Configuration Object
       
     </span>
   </a>
@@ -980,22 +1047,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#built-in-middleware" class="md-nav__link">
+  <a href="#tool-description-modes-description_mode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Built-in Middleware
+        Tool Description Modes (description_mode)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Built-in Middleware">
+    <nav class="md-nav" aria-label="Tool Description Modes (description_mode)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-retry-middleware" class="md-nav__link">
+  <a href="#1-full-default" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Retry Middleware
+        1. full (Default)
       
     </span>
   </a>
@@ -1003,10 +1070,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-rate-limit-middleware" class="md-nav__link">
+  <a href="#2-compact" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Rate Limit Middleware
+        2. compact
       
     </span>
   </a>
@@ -1014,10 +1081,49 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-cache-middleware" class="md-nav__link">
+  <a href="#3-minimal" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Cache Middleware
+        3. minimal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#description-compression-compress_descriptionstrue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description Compression (compress_descriptions=True)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#description-overrides-callback-builders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description Overrides &amp; Callback Builders
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Description Overrides &amp; Callback Builders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tool-description-overrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool Description Overrides
       
     </span>
   </a>
@@ -1025,10 +1131,38 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-pagination-middleware" class="md-nav__link">
+  <a href="#custom-builder-callback" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Pagination Middleware
+        Custom Builder Callback
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation-tag-filtering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation &amp; Tag Filtering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operation &amp; Tag Filtering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filter-by-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter by Tags
       
     </span>
   </a>
@@ -1036,10 +1170,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-logging-middleware" class="md-nav__link">
+  <a href="#filter-by-operations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Logging Middleware
+        Filter by Operations
       
     </span>
   </a>
@@ -1071,83 +1205,99 @@
   
 
 
-<h1 id="production-middleware-pipeline">Production Middleware Pipeline</h1>
-<p><code>langchain_openapi</code> provides an onion-style middleware architecture for cross-cutting production concerns.</p>
+<h1 id="prompt-optimization-context-window-management">Prompt Optimization &amp; Context Window Management</h1>
+<p>Large OpenAPI specifications (e.g. Crossref, GitHub, Slack) contain extensive operation descriptions, parameter documentation, and schema definitions. Passing raw specifications or unoptimized tools directly into an LLM context window can lead to context exhaustion, high latency, and elevated API costs.</p>
+<p><code>langchain_openapi</code> includes built-in prompt optimization tools to compress tool descriptions and filter unnecessary operations before tool creation.</p>
 <hr />
-<h2 id="overview">Overview</h2>
-<p>Middleware components wrap the HTTP execution engine in sequential order:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Request ──► Middleware 1 ──► Middleware 2 ──► Transport Call ──► API
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                                                                  │
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Response ◄── Middleware 1 ◄── Middleware 2 ◄──────────────────────┘
+<h2 id="the-openapitoolkitconfig-configuration-object">The <code>OpenAPIToolkitConfig</code> Configuration Object</h2>
+<p>Customize tool creation behavior by initializing an <code>OpenAPIToolkitConfig</code> object and passing it to <code>OpenAPIToolkit</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span><span class="p">,</span> <span class="n">OpenAPIToolkitConfig</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">OpenAPIToolkitConfig</span><span class="p">(</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">description_mode</span><span class="o">=</span><span class="s2">&quot;compact&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">compress_descriptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">include_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Works&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">tool_description_overrides</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="s2">&quot;get_works&quot;</span><span class="p">:</span> <span class="s2">&quot;Search scholarly publications in Crossref.&quot;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="p">},</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="s2">&quot;https://api.crossref.org/swagger-docs&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">)</span>
+</code></pre></div>
+<p>Alternatively, pass keyword arguments directly for convenience:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="s2">&quot;https://api.crossref.org/swagger-docs&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">description_mode</span><span class="o">=</span><span class="s2">&quot;compact&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">compress_descriptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">include_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Works&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
-<h2 id="built-in-middleware">Built-in Middleware</h2>
-<h3 id="1-retry-middleware">1. Retry Middleware</h3>
-<p>Handles network transport exceptions and transient HTTP error status codes (429, 500, 502, 503, 504) with configurable backoff strategies.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span><span class="p">,</span> <span class="n">RetryMiddleware</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">retry_mw</span> <span class="o">=</span> <span class="n">RetryMiddleware</span><span class="p">(</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">backoff</span><span class="o">=</span><span class="s2">&quot;exponential&quot;</span><span class="p">,</span>  <span class="c1"># or &quot;fixed&quot;</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">backoff_factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">retry_status_codes</span><span class="o">=</span><span class="p">(</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">),</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">)</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="s2">&quot;https://api.example.com/spec.json&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">retry_mw</span><span class="p">],</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">)</span>
-</code></pre></div>
-<h3 id="2-rate-limit-middleware">2. Rate Limit Middleware</h3>
-<p>Enforces global request rate limits across all tools using a token bucket algorithm.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span><span class="p">,</span> <span class="n">RateLimitMiddleware</span>
+<h2 id="tool-description-modes-description_mode">Tool Description Modes (<code>description_mode</code>)</h2>
+<p><code>langchain_openapi</code> supports three description modes:</p>
+<h3 id="1-full-default">1. <code>full</code> (Default)</h3>
+<p>Includes the full operation summary, full description, HTTP method, and path:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Search scholarly works registered with Crossref.
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">rate_mw</span> <span class="o">=</span> <span class="n">RateLimitMiddleware</span><span class="p">(</span><span class="n">requests_per_second</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Returns metadata for matching DOI entries.
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="s2">&quot;https://api.example.com/spec.json&quot;</span><span class="p">,</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">rate_mw</span><span class="p">],</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>HTTP Method: GET
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Path: /works
 </code></pre></div>
-<h3 id="3-cache-middleware">3. Cache Middleware</h3>
-<p>Caches <code>GET</code> response payloads with TTL expiration.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheMiddleware</span><span class="p">,</span> <span class="n">InMemoryCacheBackend</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">cache_mw</span> <span class="o">=</span> <span class="n">CacheMiddleware</span><span class="p">(</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">ttl</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">backend</span><span class="o">=</span><span class="n">InMemoryCacheBackend</span><span class="p">(),</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">cache_authenticated</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">)</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="s2">&quot;https://api.example.com/spec.json&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">cache_mw</span><span class="p">],</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">)</span>
+<h3 id="2-compact">2. <code>compact</code></h3>
+<p>Includes only a single-line summary and a concise parameter list, omitting HTTP method, path, response schemas, and examples:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Search scholarly works.
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Parameters: query (query, required), rows (query), offset (query)
 </code></pre></div>
-<h3 id="4-pagination-middleware">4. Pagination Middleware</h3>
-<p>Automatically aggregates multi-page API responses when a tool is invoked with <code>__paginate__=True</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span><span class="p">,</span> <span class="n">PaginationMiddleware</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">pag_mw</span> <span class="o">=</span> <span class="n">PaginationMiddleware</span><span class="p">(</span><span class="n">max_pages</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="s2">&quot;https://api.example.com/spec.json&quot;</span><span class="p">,</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">pag_mw</span><span class="p">],</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">)</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># Tool execution with pagination enabled</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># await tool.ainvoke({&quot;query&quot;: &quot;search_term&quot;, &quot;__paginate__&quot;: True})</span>
+<h3 id="3-minimal">3. <code>minimal</code></h3>
+<p>Includes a single sentence. Best for APIs with dozens of endpoints to minimize context usage:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Search scholarly works.
 </code></pre></div>
-<h3 id="5-logging-middleware">5. Logging Middleware</h3>
-<p>Logs outgoing request URLs and incoming response status codes with automatic sensitive header/credential redaction.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggingMiddleware</span><span class="p">,</span> <span class="n">OpenAPIToolkit</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">log_mw</span> <span class="o">=</span> <span class="n">LoggingMiddleware</span><span class="p">()</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="s2">&quot;https://api.example.com/spec.json&quot;</span><span class="p">,</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">log_mw</span><span class="p">],</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">)</span>
+<hr />
+<h2 id="description-compression-compress_descriptionstrue">Description Compression (<code>compress_descriptions=True</code>)</h2>
+<p>Enable description compression to automatically:
+- Remove duplicate sentences (e.g., when <code>summary</code> repeats <code>description</code>).
+- Strip redundant formatting, empty sections, and extra whitespace.
+- Omit response schemas and non-essential examples.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">compress_descriptions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="description-overrides-callback-builders">Description Overrides &amp; Callback Builders</h2>
+<h3 id="tool-description-overrides">Tool Description Overrides</h3>
+<p>Directly override tool descriptions for specific operations:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">url</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">tool_description_overrides</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="s2">&quot;get_works&quot;</span><span class="p">:</span> <span class="s2">&quot;Search Crossref papers by keyword or DOI.&quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="p">},</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="custom-builder-callback">Custom Builder Callback</h3>
+<p>Pass a callback function that receives the <code>Operation</code> model and returns a custom string:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">custom_builder</span><span class="p">(</span><span class="n">operation</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Execute </span><span class="si">{</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> against endpoint </span><span class="si">{</span><span class="n">operation</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">.&quot;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">description_builder</span><span class="o">=</span><span class="n">custom_builder</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="operation-tag-filtering">Operation &amp; Tag Filtering</h2>
+<p>Filter endpoints before generating LangChain tools to avoid creating unused tools:</p>
+<h3 id="filter-by-tags">Filter by Tags</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Only create tools for the &#39;Works&#39; tag</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">include_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Works&quot;</span><span class="p">])</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Exclude internal or admin endpoints</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">exclude_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Admin&quot;</span><span class="p">])</span>
+</code></pre></div>
+<h3 id="filter-by-operations">Filter by Operations</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Specify exact operations to include</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">include_operations</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;get_works&quot;</span><span class="p">,</span> <span class="s2">&quot;get_members&quot;</span><span class="p">])</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Exclude destructive operations</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">exclude_operations</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;delete_work&quot;</span><span class="p">])</span>
 </code></pre></div>
 
 

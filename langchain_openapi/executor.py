@@ -5,6 +5,7 @@ import time
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from typing import Any
+from urllib.parse import urljoin
 
 import httpx
 
@@ -114,9 +115,13 @@ class RequestBuilder:
                     cookies[name] = str(val)
                     consumed_args.add(name)
 
-        full_url = (
-            f"{base_url}/{path_template.lstrip('/')}" if base_url else path_template
-        )
+        if path_template.startswith("http://") or path_template.startswith("https://"):
+            full_url = path_template
+        elif base_url:
+            base_url_with_slash = base_url if base_url.endswith("/") else f"{base_url}/"
+            full_url = urljoin(base_url_with_slash, path_template.lstrip("/"))
+        else:
+            full_url = path_template
 
         json_body: Any = None
         if operation.request_body:

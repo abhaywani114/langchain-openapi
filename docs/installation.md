@@ -7,16 +7,31 @@
 
 ---
 
-## Installing via uv (Recommended)
+## Package Naming & Installation
+
+The PyPI distribution package name is **`langchain-openapi-tools`**, whereas the Python import module name is **`langchain_openapi`**.
+
+### Installing via uv (Recommended)
 
 ```bash
 uv add langchain-openapi-tools
 ```
 
-## Installing via pip
+### Installing via pip
 
 ```bash
 pip install langchain-openapi-tools
+```
+
+> **Note on Package Naming:**
+> The PyPI distribution name differs from the Python import name. This is common in Python packages (e.g. `beautifulsoup4` → `import bs4`, `opencv-python` → `import cv2`).
+
+---
+
+## Importing in Python
+
+```python
+from langchain_openapi import OpenAPIToolkit, OpenAPIToolkitConfig
 ```
 
 ---
