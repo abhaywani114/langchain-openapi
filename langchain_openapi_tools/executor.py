@@ -332,7 +332,92 @@ class AsyncHTTPExecutor:
             arguments=arguments,
             base_url_override=base_url_override,
         )
+        return await self._dispatch(built_req)
 
+    async def request(
+        self,
+        method: str,
+        endpoint: str,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, Any] | None = None,
+        json_body: Any = None,
+        cookies: dict[str, str] | None = None,
+        data: Any = None,
+        content: bytes | str | None = None,
+        files: dict[str, Any] | None = None,
+        base_url_override: str | None = None,
+    ) -> ResponseData:
+        """Execute a raw HTTP request through the shared provider + middleware.
+
+        Used by the Generic HTTP Toolkit so a small, fixed number of tools
+        (``GET``/``POST``/``PUT``/``PATCH``/``DELETE``) can share the same
+        execution stack as the typed toolkit — including authentication,
+        retries, rate limiting, caching, and logging.
+
+        Args:
+            method: HTTP method (case-insensitive).
+            endpoint: Absolute URL or a path/URL fragment to resolve against
+                ``base_url_override`` or the executor's own ``base_url``.
+            params: Query string parameters.
+            headers: Request headers.
+            json_body: JSON body payload (mutually exclusive with ``data`` /
+                ``content`` / ``files``).
+            cookies: Cookies to attach to the request.
+            data: URL-encoded form or raw form data.
+            content: Raw request body (str or bytes).
+            files: Multipart file uploads.
+            base_url_override: Optional base URL override for this call.
+
+        Returns:
+            A :class:`ResponseData` with parsed body, status, and headers.
+        """
+        base_url = base_url_override or self.base_url or ""
+        endpoint = endpoint or ""
+
+        if endpoint.startswith("http://") or endpoint.startswith("https://"):
+            full_url = endpoint
+        elif base_url:
+            base_with_slash = base_url if base_url.endswith("/") else f"{base_url}/"
+            full_url = urljoin(base_with_slash, endpoint.lstrip("/"))
+        else:
+            full_url = endpoint
+
+        normalized_headers: dict[str, str] = {}
+        if headers:
+            for hk, hv in headers.items():
+                if hv is None:
+                    continue
+                normalized_headers[str(hk)] = str(hv)
+
+        normalized_cookies: dict[str, str] = {}
+        if cookies:
+            for ck, cv in cookies.items():
+                if cv is None:
+                    continue
+                normalized_cookies[str(ck)] = str(cv)
+
+        if (
+            json_body is not None
+            and data is None
+            and content is None
+            and files is None
+        ):
+            normalized_headers.setdefault("Content-Type", "application/json")
+
+        built_req = BuiltRequest(
+            method=method.upper(),
+            url=full_url,
+            headers=normalized_headers,
+            params={k: v for k, v in (params or {}).items() if v is not None},
+            json_body=json_body,
+            cookies=normalized_cookies,
+            data=data,
+            files=files,
+            content=content,
+        )
+        return await self._dispatch(built_req)
+
+    async def _dispatch(self, built_req: BuiltRequest) -> ResponseData:
         start_time = time.monotonic()
 
         try:

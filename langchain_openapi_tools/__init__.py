@@ -34,6 +34,12 @@ from langchain_openapi_tools.executor import (
     ResponseParser,
     create_async_client,
 )
+from langchain_openapi_tools.generic_toolkit import (
+    GenericHTTPToolFactory,
+    GenericOpenAPIToolkit,
+    GenericToolkitConfig,
+    ToolkitMode,
+)
 from langchain_openapi_tools.loader import OpenAPILoader
 from langchain_openapi_tools.middleware import (
     CacheBackend,
@@ -77,6 +83,11 @@ from langchain_openapi_tools.schema_converter import (
     SchemaConverter,
     map_schema_type_to_python,
 )
+from langchain_openapi_tools.search import (
+    OperationEntry,
+    OperationIndex,
+    SearchResult,
+)
 from langchain_openapi_tools.swagger import SwaggerNormalizer
 from langchain_openapi_tools.toolkit import (
     LangChainToolFactory,
@@ -104,6 +115,9 @@ __all__ = [
     "CookiesProvider",
     "DataType",
     "ExecutionTimeoutError",
+    "GenericHTTPToolFactory",
+    "GenericOpenAPIToolkit",
+    "GenericToolkitConfig",
     "HTTPExecutionError",
     "HTTPMethod",
     "InMemoryCacheBackend",
@@ -124,6 +138,8 @@ __all__ = [
     "OpenAPIToolkit",
     "OpenAPIToolkitConfig",
     "Operation",
+    "OperationEntry",
+    "OperationIndex",
     "PaginationMiddleware",
     "Parameter",
     "ParameterLocation",
@@ -142,11 +158,13 @@ __all__ = [
     "RetryMiddleware",
     "Schema",
     "SchemaConverter",
+    "SearchResult",
     "SpecAdapter",
     "SpecLoadError",
     "StaticHeadersProvider",
     "Swagger2Adapter",
     "SwaggerNormalizer",
+    "ToolkitMode",
     "UnsupportedVersionError",
     "__version__",
     "build_tool_description",

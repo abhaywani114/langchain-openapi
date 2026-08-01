@@ -477,7 +477,45 @@ class OpenAPIToolkit:
         tags: list[str] | None = None,
         include: list[str] | None = None,
         exclude: list[str] | None = None,
+        mode: Literal["typed", "generic", "hybrid"] = "typed",
+        typed_tags: list[str] | None = None,
+        typed_operations: list[str] | None = None,
     ) -> list[BaseTool]:
+        """Return the typed tools, or delegate to the generic/hybrid strategy.
+
+        The default (``mode="typed"``) keeps backward compatibility: one
+        LangChain tool per operation, filtered by ``methods`` / ``tags`` /
+        ``include`` / ``exclude``. Passing ``mode="generic"`` or
+        ``mode="hybrid"`` transparently delegates to
+        :class:`~langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit`
+        so users can opt in without switching classes.
+        """
+        if mode != "typed":
+            # Lazy import to avoid a hard circular dependency.
+            from langchain_openapi_tools.generic_toolkit import (
+                GenericOpenAPIToolkit,
+                GenericToolkitConfig,
+            )
+
+            generic_config = GenericToolkitConfig(
+                typed_tags=typed_tags,
+                typed_operations=typed_operations,
+                typed_config=self.config,
+            )
+            generic = GenericOpenAPIToolkit(
+                spec=self.spec,
+                provider=self.executor.provider,
+                middleware=self.executor.pipeline.middlewares,
+                timeout=self.executor.timeout,
+                base_url=self.executor.base_url,
+                config=generic_config,
+            )
+            return generic.get_tools(
+                mode=mode,
+                typed_tags=typed_tags,
+                typed_operations=typed_operations,
+            )
+
         result: list[BaseTool] = []
         target_methods = [m.upper() for m in methods] if methods else None
         inc_set = set(include) if include else None
