@@ -10,13 +10,13 @@
 ## Installing via uv (Recommended)
 
 ```bash
-uv add langchain-openapi
+uv add langchain-openapi-tools
 ```
 
 ## Installing via pip
 
 ```bash
-pip install langchain-openapi
+pip install langchain-openapi-tools
 ```
 
 ---

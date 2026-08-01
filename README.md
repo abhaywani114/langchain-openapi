@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/abhaywani114/langchain-openapi/actions/workflows/ci.yml"><img src="https://github.com/abhaywani114/langchain-openapi/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
-  <a href="https://pypi.org/project/langchain-openapi/"><img src="https://img.shields.io/pypi/v/langchain-openapi.svg" alt="PyPI Version"/></a>
+  <a href="https://pypi.org/project/langchain-openapi-tools/"><img src="https://img.shields.io/pypi/v/langchain-openapi-tools.svg" alt="PyPI Version"/></a>
   <a href="https://abhaywani114.github.io/langchain-openapi/"><img src="https://img.shields.io/badge/docs-mkdocs-blue.svg" alt="Documentation"/></a>
   <a href="https://python.org"><img src="https://img.shields.io/badge/python-3.11%2B-blue.svg" alt="Python 3.11+"/></a>
   <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/badge/code%20style-ruff-000000.svg" alt="Code Style: Ruff"/></a>
@@ -50,9 +50,9 @@ No python code generation is required—tools are generated dynamically at runti
 ### Installation
 
 ```bash
-uv add langchain-openapi
+uv add langchain-openapi-tools
 # or
-pip install langchain-openapi
+pip install langchain-openapi-tools
 ```
 
 ### Basic Usage

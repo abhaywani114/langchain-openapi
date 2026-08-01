@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "langchain-openapi"
+name = "langchain-openapi-tools"
 version = "1.0.0"
 description = "Convert OpenAPI specifications into native, production-grade LangChain tools."
 readme = "README.md"
