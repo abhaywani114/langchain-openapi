@@ -69,6 +69,7 @@ from langchain_openapi.schema_converter import (
     SchemaConverter,
     map_schema_type_to_python,
 )
+from langchain_openapi.swagger import SwaggerNormalizer
 from langchain_openapi.toolkit import (
     LangChainToolFactory,
     OpenAPIToolCallbackHandler,
@@ -132,6 +133,7 @@ __all__ = [
     "SchemaConverter",
     "SpecLoadError",
     "StaticHeadersProvider",
+    "SwaggerNormalizer",
     "UnsupportedVersionError",
     "__version__",
     "build_tool_description",

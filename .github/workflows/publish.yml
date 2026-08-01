@@ -3,7 +3,7 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - "v*":wheel::
+      - "v*"
 
 permissions:
   contents: read

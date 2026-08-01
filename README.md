@@ -39,11 +39,38 @@ No python code generation is required—tools are generated dynamically at runti
 
 ## Supported Specifications
 
+- ✅ **Swagger 2.0** (Automatically normalized to OpenAPI 3.0)
 - ✅ **OpenAPI 3.0.x** (JSON and YAML)
 - ✅ **OpenAPI 3.1.x** (JSON and YAML)
-- ❌ **Swagger 2.0** (Explicitly rejected with descriptive error)
 
 ---
+
+## Architecture Pipeline
+
+```text
+          Swagger 2.0 / OpenAPI 3.x
+                     │
+                     ▼
+            Swagger Normalizer
+                     │
+                     ▼
+          Normalized OpenAPI Model
+                     │
+                     ▼
+              Existing Parser
+                     │
+                     ▼
+           Internal Operation Models
+                     │
+                     ▼
+            Schema Converter
+                     │
+                     ▼
+              HTTP Executor
+                     │
+                     ▼
+          LangChain StructuredTools
+```
 
 ## Quick Start
 

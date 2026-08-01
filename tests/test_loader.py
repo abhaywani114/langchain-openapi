@@ -195,22 +195,20 @@ def test_paths_not_a_dict() -> None:
         loader.load()
 
 
-def test_unsupported_swagger_version() -> None:
-    """Test loading a Swagger 2.0 specification raises UnsupportedVersionError."""
+def test_swagger_2_0_supported() -> None:
+    """Test loading a Swagger 2.0 specification succeeds."""
     swagger_dict = {
         "swagger": "2.0",
-        "info": {"title": "Swagger API"},
+        "info": {"title": "Swagger API", "version": "1.0.0"},
         "paths": {},
     }
     loader = OpenAPILoader.from_dict(swagger_dict)
-
-    pattern = re.escape("Swagger version '2.0' is not supported")
-    with pytest.raises(UnsupportedVersionError, match=pattern):
-        loader.load()
+    spec = loader.load()
+    assert spec.title == "Swagger API"
 
 
 def test_unsupported_openapi_version() -> None:
-    """Test loading an unsupported OpenAPI version (e.g., 4.0.0)."""
+    """Test loading an unsupported OpenAPI/Swagger version (e.g., 4.0.0)."""
     invalid_dict = {
         "openapi": "4.0.0",
         "info": {"title": "Future API"},
@@ -218,7 +216,7 @@ def test_unsupported_openapi_version() -> None:
     }
     loader = OpenAPILoader.from_dict(invalid_dict)
 
-    pattern = re.escape("OpenAPI version '4.0.0' is not supported")
+    pattern = re.escape("Specification version '4.0.0' is not supported.")
     with pytest.raises(UnsupportedVersionError, match=pattern):
         loader.load()
 

@@ -137,6 +137,11 @@ class OpenAPILoader:
         """
         raw_data = self._load_fn()
         validate_raw_spec(raw_data)
+        swagger_ver = str(raw_data.get("swagger", ""))
+        if raw_data.get("swagger") == "2.0" or swagger_ver.startswith("2."):
+            from langchain_openapi.swagger import SwaggerNormalizer
+
+            raw_data = SwaggerNormalizer(raw_data).normalize()
         spec = OpenAPISpec.from_dict(raw_data)
 
         logger.info(

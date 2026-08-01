@@ -72,14 +72,14 @@ def validate_raw_spec(spec_dict: dict[str, Any]) -> None:
         )
 
     version_str = str(version)
-    if version_str.startswith("2."):
+    if not (
+        version_str.startswith("2.0")
+        or version_str.startswith("2.")
+        or version_str.startswith("3.0")
+        or version_str.startswith("3.1")
+    ):
         raise UnsupportedVersionError(
-            f"Swagger version '{version_str}' is not supported."
-        )
-
-    if not (version_str.startswith("3.0") or version_str.startswith("3.1")):
-        raise UnsupportedVersionError(
-            f"OpenAPI version '{version_str}' is not supported."
+            f"Specification version '{version_str}' is not supported."
         )
 
     if "paths" not in spec_dict:

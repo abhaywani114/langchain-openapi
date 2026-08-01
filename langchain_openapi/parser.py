@@ -40,7 +40,13 @@ class OpenAPISpec:
     @classmethod
     def from_dict(cls, spec_dict: dict[str, Any]) -> "OpenAPISpec":
         """Construct an OpenAPISpec instance from a raw dictionary."""
-        version = str(spec_dict.get("openapi", ""))
+        swagger_ver = str(spec_dict.get("swagger", ""))
+        if spec_dict.get("swagger") == "2.0" or swagger_ver.startswith("2."):
+            from langchain_openapi.swagger import SwaggerNormalizer
+
+            spec_dict = SwaggerNormalizer(spec_dict).normalize()
+
+        version = str(spec_dict.get("openapi", "3.0.0"))
         info = spec_dict.get("info")
         if not isinstance(info, dict):
             info = {}
@@ -170,6 +176,12 @@ class OpenAPIParser:
     """Parser for converting an OpenAPISpec into normalized internal Python models."""
 
     def __init__(self, spec: OpenAPISpec) -> None:
+        swagger_ver = str(spec.raw.get("swagger", ""))
+        if spec.raw.get("swagger") == "2.0" or swagger_ver.startswith("2."):
+            from langchain_openapi.swagger import SwaggerNormalizer
+
+            normalized_raw = SwaggerNormalizer(spec.raw).normalize()
+            spec = OpenAPISpec.from_dict(normalized_raw)
         self._spec = spec
         self._resolver = ReferenceResolver(spec.raw)
 
