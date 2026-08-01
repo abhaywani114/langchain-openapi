@@ -89,3 +89,26 @@ tools = toolkit.get_tools()
 # Get single tool by operation name
 tool = toolkit.get_tool("get_user_by_id")
 ```
+
+---
+
+## Execution Strategies (Typed / Generic / Hybrid)
+
+By default `OpenAPIToolkit.get_tools()` emits one LangChain
+`StructuredTool` per operation. For large APIs where that would exhaust
+the prompt window, `get_tools()` also accepts a `mode` argument that
+transparently delegates to the
+[`GenericOpenAPIToolkit`][langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit]:
+
+```python
+# Constant surface: GET / POST / PUT / PATCH / DELETE +
+# search_operations / describe_operation / list_operations / list_tags.
+generic_tools = toolkit.get_tools(mode="generic")
+
+# Typed tools for hot paths, generic HTTP tools for everything else.
+hybrid_tools = toolkit.get_tools(mode="hybrid", typed_tags=["Users"])
+```
+
+See the [Generic & Hybrid Toolkits](generic_toolkit.md) guide for the
+full comparison, discovery-tool reference, and hybrid-mode
+configuration.

@@ -70,3 +70,32 @@ tools = toolkit.get_tools()
 # Bind to LLM
 # llm_with_tools = llm.bind_tools(tools)
 ```
+
+---
+
+## 5. Scale to Large APIs
+
+For APIs with hundreds of operations (GitHub, Kubernetes, Stripe...) the
+typed toolkit's one-tool-per-operation strategy can blow the prompt
+window. Switch to the
+[`GenericOpenAPIToolkit`](generic_toolkit.md) for a constant tool count
+regardless of API size:
+
+```python
+from langchain_openapi_tools import GenericOpenAPIToolkit
+
+toolkit = GenericOpenAPIToolkit.from_url(
+    "https://petstore3.swagger.io/api/v3/openapi.json"
+)
+
+tools = toolkit.get_tools()  # GET/POST/PUT/PATCH/DELETE + discovery helpers
+```
+
+Or mix both strategies with hybrid mode:
+
+```python
+tools = toolkit.get_tools(mode="hybrid", typed_tags=["Pet"])
+```
+
+See the [Generic & Hybrid Toolkits guide](generic_toolkit.md) for the
+full walkthrough.

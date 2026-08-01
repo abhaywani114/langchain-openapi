@@ -9,6 +9,7 @@
 ## Key Features
 
 - ⚡ **Zero-Code Tool Generation**: Instant runtime conversion from OpenAPI JSON/YAML to LangChain tools.
+- 🧭 **Typed, Generic & Hybrid Toolkits**: Choose per-operation typed tools, a constant set of generic `GET`/`POST`/... tools with on-demand endpoint discovery, or a hybrid mix — all sharing the same execution stack.
 - 🔒 **Comprehensive Authentication**: Built-in support for Bearer Tokens, API Keys, Basic Auth, Cookies, and custom request providers.
 - 🛡️ **Production Middleware Pipeline**: Onion-style request/response interceptors for retries, rate-limiting, caching, logging, and result pagination.
 - 🎯 **Type-Safe Validation**: Dynamic Pydantic schema generation ensures LLM inputs are validated before HTTP execution.
@@ -41,4 +42,5 @@ for tool in tools:
 - [Architecture](architecture.md)
 - [Authentication & Request Providers](authentication.md)
 - [Production Middleware](middleware.md)
+- [Generic & Hybrid Toolkits](generic_toolkit.md)
 - [API Reference](api/toolkit.md)

@@ -43,6 +43,41 @@ OpenAPI Spec (JSON / YAML / Dict)
          httpx.AsyncClient (Target HTTP API)
 ```
 
+### Alternate LangChain Interface: Generic HTTP Toolkit
+
+Everything above the `LangChainToolFactory` node is shared with the
+[`GenericOpenAPIToolkit`][langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit],
+which swaps the *one-tool-per-operation* strategy for a constant set of
+tools plus discovery helpers:
+
+```text
+            OpenAPISpec (shared)
+                   │
+                   ▼
+              OpenAPIParser
+                   │
+         ┌───────┴───────────────┐
+         ▼                        ▼
+ LangChainToolFactory       OperationIndex
+ (typed per-op)              (keyword + fuzzy)
+         │                        │
+         │                        ▼
+         │            GenericHTTPToolFactory
+         │            (GET/POST/PUT/PATCH/DELETE +
+         │             search_operations, describe_operation,
+         │             list_operations, list_tags)
+         └──────┬────────────────┘
+                ▼
+     AsyncHTTPExecutor.execute() / .request()
+                (shared provider + middleware + client)
+```
+
+The generic tools invoke
+`AsyncHTTPExecutor.request(method, endpoint, ...)`, a public raw-request
+entry point that reuses the same middleware pipeline, request providers,
+timeout, and HTTP client as the typed `execute(operation, arguments)`
+call. See the [Generic & Hybrid Toolkits guide](generic_toolkit.md).
+
 ---
 
 ## Pipeline Components
@@ -70,3 +105,17 @@ Intercepts outgoing requests and incoming responses to apply retries, rate limit
 
 ### 8. Request Providers
 Applies authentication schemes (Bearer tokens, API Keys, Basic Auth) and static headers before network transport.
+
+### 9. OperationIndex & GenericHTTPToolFactory
+[`OperationIndex`][langchain_openapi_tools.search.OperationIndex] builds
+an in-memory searchable projection of every parsed `Operation` (keyword,
+fuzzy, and tag/method filtering — no external vector database).
+[`GenericHTTPToolFactory`][langchain_openapi_tools.generic_toolkit.GenericHTTPToolFactory]
+uses the index to expose four LangChain discovery tools
+(`search_operations`, `describe_operation`, `list_operations`,
+`list_tags`) alongside the five generic HTTP tools
+(`GET`/`POST`/`PUT`/`PATCH`/`DELETE`). All of these share the same
+`AsyncHTTPExecutor` via its `request()` method — so authentication,
+retry, rate-limit, cache, and pagination middleware are inherited
+without duplicated logic. See the
+[Generic & Hybrid Toolkits guide](generic_toolkit.md).

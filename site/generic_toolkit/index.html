@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://github.com/abhaywani114/langchain-openapi/architecture/">
+        <link rel="canonical" href="https://github.com/abhaywani114/langchain-openapi/generic_toolkit/">
       
       
-        <link rel="prev" href="../prompt_optimization/">
+        <link rel="prev" href="../toolkit/">
       
       
-        <link rel="next" href="../authentication/">
+        <link rel="next" href="../examples/crossref/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Architecture - langchain-openapi-tools</title>
+        <title>Generic & Hybrid Toolkits - langchain-openapi-tools</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#architecture-core-pipeline" class="md-skip">
+        <a href="#generic-hybrid-toolkits" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Architecture
+              Generic & Hybrid Toolkits
             
           </span>
         </div>
@@ -367,37 +367,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -413,170 +386,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#execution-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Execution Pipeline
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Execution Pipeline">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#alternate-langchain-interface-generic-http-toolkit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Alternate LangChain Interface: Generic HTTP Toolkit
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pipeline-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pipeline Components
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pipeline Components">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-openapiloader" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. OpenAPILoader
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-spec-adapter-layer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Spec Adapter Layer
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-openapiparser" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. OpenAPIParser
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-schemaconverter-pydanticfactory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. SchemaConverter &amp; PydanticFactory
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-langchaintoolfactory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. LangChainToolFactory
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-asynchttpexecutor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. AsyncHTTPExecutor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-middleware-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Middleware Pipeline
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-request-providers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. Request Providers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#9-operationindex-generichttptoolfactory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9. OperationIndex &amp; GenericHTTPToolFactory
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -666,10 +475,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../generic_toolkit/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generic & Hybrid Toolkits
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -685,6 +521,153 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-a-generic-toolkit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a Generic Toolkit?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generated-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generated Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discovery-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discovery Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intended-reasoning-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intended Reasoning Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hybrid-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hybrid Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation-search-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation Search Index
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-which-toolkit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Which Toolkit
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1113,22 +1096,55 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#execution-pipeline" class="md-nav__link">
+  <a href="#why-a-generic-toolkit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Execution Pipeline
+        Why a Generic Toolkit?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Execution Pipeline">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generated-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generated Tools">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#alternate-langchain-interface-generic-http-toolkit" class="md-nav__link">
+  <a href="#http-tools" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Alternate LangChain Interface: Generic HTTP Toolkit
+        HTTP Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discovery-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discovery Tools
       
     </span>
   </a>
@@ -1141,118 +1157,68 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pipeline-components" class="md-nav__link">
+  <a href="#intended-reasoning-flow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pipeline Components
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pipeline Components">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-openapiloader" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. OpenAPILoader
+        Intended Reasoning Flow
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#2-spec-adapter-layer" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#shared-infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Spec Adapter Layer
+        Shared Infrastructure
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#3-openapiparser" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#hybrid-mode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. OpenAPIParser
+        Hybrid Mode
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#4-schemaconverter-pydanticfactory" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. SchemaConverter &amp; PydanticFactory
+        Configuration
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#5-langchaintoolfactory" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#operation-search-index" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. LangChainToolFactory
+        Operation Search Index
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#6-asynchttpexecutor" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-which-toolkit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. AsyncHTTPExecutor
+        When to Use Which Toolkit
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-middleware-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Middleware Pipeline
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#8-request-providers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        8. Request Providers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#9-operationindex-generichttptoolfactory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        9. OperationIndex &amp; GenericHTTPToolFactory
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1276,106 +1242,244 @@
   
 
 
-<h1 id="architecture-core-pipeline">Architecture &amp; Core Pipeline</h1>
-<p><code>langchain-openapi</code> processes raw OpenAPI specs into native LangChain tools using a clean, modular pipeline.</p>
+<h1 id="generic-hybrid-toolkits">Generic &amp; Hybrid Toolkits</h1>
+<p><code>langchain-openapi</code> ships <strong>three execution strategies</strong> for turning an
+OpenAPI specification into LangChain tools. They all share the same
+loader, parser, reference resolver, request providers, middleware, and
+<code>AsyncHTTPExecutor</code> — only the LangChain interface changes.</p>
+<table>
+<thead>
+<tr>
+<th>Toolkit</th>
+<th>Best for</th>
+<th>Tool count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Typed</strong> — <a class="autorefs autorefs-internal" title="langchain_openapi_tools.toolkit.OpenAPIToolkit" href="../api/toolkit/#langchain_openapi_tools.toolkit.OpenAPIToolkit"><code>OpenAPIToolkit</code></a></td>
+<td>Small &amp; medium APIs, maximum correctness</td>
+<td>One per operation</td>
+</tr>
+<tr>
+<td><strong>Generic</strong> — <a class="autorefs autorefs-internal" title="langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit" href="../api/generic_toolkit/#langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit"><code>GenericOpenAPIToolkit</code></a></td>
+<td>Large APIs (GitHub, Kubernetes, Stripe), low context usage</td>
+<td>Constant (9 tools)</td>
+</tr>
+<tr>
+<td><strong>Hybrid</strong> — <code>GenericOpenAPIToolkit.get_tools(mode="hybrid")</code></td>
+<td>Enterprise APIs with hot paths + long tails</td>
+<td>Typed for selected ops + generic for the rest</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="execution-pipeline">Execution Pipeline</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>OpenAPI Spec (JSON / YAML / Dict)
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>              │
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>              ▼
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>       OpenAPILoader
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>              │
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>              ▼
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>      Spec Adapter Layer  (Swagger 2.0 → 3.0 normalization; 3.0/3.1 pass-through)
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>              │
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>              ▼
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        OpenAPIParser
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>              │
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>              ▼
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>      SchemaConverter ────► Pydantic Dynamic Models
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>              │              (oneOf/anyOf → Union, allOf → merged model,
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>              │               const → Literal, nullable → Optional)
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>              ▼
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    LangChainToolFactory
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>              │
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>              ▼
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>      AsyncHTTPExecutor
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>              │
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>              ▼
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>     Media-type dispatch (application/json, x-www-form-urlencoded,
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>                          multipart/form-data, text/*, application/xml,
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>                          vendor +json variants)
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>              │
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>              ▼
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>     Middleware Pipeline (Retry, Cache, RateLimit, Logging, Pagination)
-<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>              │
-<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>              ▼
-<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>      Request Providers (Authentication &amp; Header Mutations)
-<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>              │
-<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>              ▼
-<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>         httpx.AsyncClient (Target HTTP API)
-</code></pre></div>
-<h3 id="alternate-langchain-interface-generic-http-toolkit">Alternate LangChain Interface: Generic HTTP Toolkit</h3>
-<p>Everything above the <code>LangChainToolFactory</code> node is shared with the
-<a class="autorefs autorefs-internal" title="langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit" href="../api/generic_toolkit/#langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit"><code>GenericOpenAPIToolkit</code></a>,
-which swaps the <em>one-tool-per-operation</em> strategy for a constant set of
-tools plus discovery helpers:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>            OpenAPISpec (shared)
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>                   │
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                   ▼
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>              OpenAPIParser
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                   │
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>         ┌───────┴───────────────┐
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>         ▼                        ▼
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a> LangChainToolFactory       OperationIndex
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a> (typed per-op)              (keyword + fuzzy)
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>         │                        │
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>         │                        ▼
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>         │            GenericHTTPToolFactory
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>         │            (GET/POST/PUT/PATCH/DELETE +
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>         │             search_operations, describe_operation,
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>         │             list_operations, list_tags)
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>         └──────┬────────────────┘
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>                ▼
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>     AsyncHTTPExecutor.execute() / .request()
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>                (shared provider + middleware + client)
-</code></pre></div>
-<p>The generic tools invoke
-<code>AsyncHTTPExecutor.request(method, endpoint, ...)</code>, a public raw-request
-entry point that reuses the same middleware pipeline, request providers,
-timeout, and HTTP client as the typed <code>execute(operation, arguments)</code>
-call. See the <a href="../generic_toolkit/">Generic &amp; Hybrid Toolkits guide</a>.</p>
+<h2 id="why-a-generic-toolkit">Why a Generic Toolkit?</h2>
+<p>Generating one typed tool per operation is ideal for correctness but does
+not scale for large surfaces. A modern spec such as the GitHub REST API
+declares <strong>hundreds</strong> of operations. Bundling every one into the prompt
+causes:</p>
+<ul>
+<li>Very large system prompts and slow agent start-up.</li>
+<li>Context-window exhaustion on smaller models.</li>
+<li>Increased hallucination rate as the tool list grows.</li>
+</ul>
+<p>The Generic Toolkit exposes a <strong>fixed</strong> set of five HTTP tools plus four
+discovery helpers, regardless of whether the underlying API has ten
+endpoints or ten thousand.</p>
 <hr />
-<h2 id="pipeline-components">Pipeline Components</h2>
-<h3 id="1-openapiloader">1. OpenAPILoader</h3>
-<p>In-gests raw JSON/YAML specifications from local disk files, remote HTTP endpoints, or in-memory dictionaries. Normalizes encoding and format. When loading from a URL, the loader retains the source URL on the resulting <code>OpenAPISpec</code> so relative <code>servers</code> entries (OpenAPI 3.x) and missing <code>host</code> values (Swagger 2.0) can be resolved to absolute request URLs downstream.</p>
-<h3 id="2-spec-adapter-layer">2. Spec Adapter Layer</h3>
-<p><code>langchain_openapi_tools.adapters</code> provides <code>SpecAdapter</code> implementations for every supported family: <code>Swagger2Adapter</code> normalizes Swagger 2.0 documents into OpenAPI 3.0 shape (using the source URL to fill in a missing <code>host</code>), and <code>OpenAPI3Adapter</code> accepts both 3.0.x and 3.1.x without modification. <code>detect_spec_version()</code>, <code>select_adapter()</code>, and <code>normalize_spec()</code> provide the public entry points. The resulting family tag is preserved on <code>OpenAPISpec.spec_family</code>.</p>
-<h3 id="3-openapiparser">3. OpenAPIParser</h3>
-<p>Translates raw specification dictionaries into strongly-typed internal data models (<code>Operation</code>, <code>Parameter</code>, <code>RequestBody</code>, <code>Response</code>, <code>Schema</code>). Resolves internal <code>$ref</code> pointers using <code>ReferenceResolver</code>, and extracts polymorphic keywords (<code>oneOf</code>, <code>anyOf</code>, <code>allOf</code>), <code>const</code> values, and <code>readOnly</code>/<code>writeOnly</code>/<code>deprecated</code> markers.</p>
-<h3 id="4-schemaconverter-pydanticfactory">4. SchemaConverter &amp; PydanticFactory</h3>
-<p>Converts JSON Schema representations into dynamic Pydantic models at runtime using <code>pydantic.create_model()</code>. Union keywords become <code>typing.Union</code>s, <code>allOf</code> merges into a single model, list-form <code>type</code> becomes a <code>Union</code> of Python types, and <code>nullable</code> / <code>type: [X, "null"]</code> become <code>Optional[X]</code>. Incoming LLM tool arguments are validated against the resulting schema before dispatch.</p>
-<h3 id="5-langchaintoolfactory">5. LangChainToolFactory</h3>
-<p>Translates parsed <code>Operation</code> models into executable LangChain <code>StructuredTool</code> instances.</p>
-<h3 id="6-asynchttpexecutor">6. AsyncHTTPExecutor</h3>
-<p>Orchestrates request building, middleware execution, provider transformations, and asynchronous network transport. <code>RequestBuilder</code> inspects the operation's request-body content-types and dispatches to the correct httpx encoding (JSON, form-urlencoded, multipart with files, or raw text/XML), and coerces validated Pydantic body models back to JSON-safe primitives before serialization.</p>
-<h3 id="7-middleware-pipeline">7. Middleware Pipeline</h3>
-<p>Intercepts outgoing requests and incoming responses to apply retries, rate limiting, caching, result aggregation, and sanitized telemetry.</p>
-<h3 id="8-request-providers">8. Request Providers</h3>
-<p>Applies authentication schemes (Bearer tokens, API Keys, Basic Auth) and static headers before network transport.</p>
-<h3 id="9-operationindex-generichttptoolfactory">9. OperationIndex &amp; GenericHTTPToolFactory</h3>
-<p><a class="autorefs autorefs-internal" title="langchain_openapi_tools.search.OperationIndex" href="../api/search/#langchain_openapi_tools.search.OperationIndex"><code>OperationIndex</code></a> builds
-an in-memory searchable projection of every parsed <code>Operation</code> (keyword,
-fuzzy, and tag/method filtering — no external vector database).
-<a class="autorefs autorefs-internal" title="langchain_openapi_tools.generic_toolkit.GenericHTTPToolFactory" href="../api/generic_toolkit/#langchain_openapi_tools.generic_toolkit.GenericHTTPToolFactory"><code>GenericHTTPToolFactory</code></a>
-uses the index to expose four LangChain discovery tools
-(<code>search_operations</code>, <code>describe_operation</code>, <code>list_operations</code>,
-<code>list_tags</code>) alongside the five generic HTTP tools
-(<code>GET</code>/<code>POST</code>/<code>PUT</code>/<code>PATCH</code>/<code>DELETE</code>). All of these share the same
-<code>AsyncHTTPExecutor</code> via its <code>request()</code> method — so authentication,
-retry, rate-limit, cache, and pagination middleware are inherited
-without duplicated logic. See the
-<a href="../generic_toolkit/">Generic &amp; Hybrid Toolkits guide</a>.</p>
+<h2 id="quick-example">Quick Example</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericOpenAPIToolkit</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">GenericOpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="s2">&quot;https://petstore3.swagger.io/api/v3/openapi.json&quot;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">tools</span> <span class="o">=</span> <span class="n">toolkit</span><span class="o">.</span><span class="n">get_tools</span><span class="p">()</span>  <span class="c1"># constant set — see next section</span>
+</code></pre></div>
+<hr />
+<h2 id="generated-tools">Generated Tools</h2>
+<p><code>GenericOpenAPIToolkit.get_tools(mode="generic")</code> returns:</p>
+<h3 id="http-tools">HTTP Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Arguments</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>endpoint</code>, <code>params</code>, <code>headers</code></td>
+<td>HTTP GET request</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>endpoint</code>, <code>body</code>, <code>params</code>, <code>headers</code></td>
+<td>HTTP POST request with optional JSON body</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><code>endpoint</code>, <code>body</code>, <code>params</code>, <code>headers</code></td>
+<td>HTTP PUT request</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>endpoint</code>, <code>body</code>, <code>params</code>, <code>headers</code></td>
+<td>HTTP PATCH request</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>endpoint</code>, <code>params</code>, <code>headers</code></td>
+<td>HTTP DELETE request</td>
+</tr>
+</tbody>
+</table>
+<p><code>endpoint</code> may be a path relative to the toolkit's base URL
+(<code>"/pets/1"</code>) or an absolute URL (<code>"https://api.example.com/pets/1"</code>).</p>
+<h3 id="discovery-tools">Discovery Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Arguments</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>search_operations</code></td>
+<td><code>query</code>, <code>limit</code>, <code>tag?</code>, <code>method?</code></td>
+<td>Rank operations by relevance to a query</td>
+</tr>
+<tr>
+<td><code>describe_operation</code></td>
+<td><code>operation_id</code></td>
+<td>Return summary, description, parameters, request body, responses</td>
+</tr>
+<tr>
+<td><code>list_operations</code></td>
+<td><code>tag?</code>, <code>method?</code>, <code>limit</code></td>
+<td>Enumerate operations (optionally filtered)</td>
+</tr>
+<tr>
+<td><code>list_tags</code></td>
+<td>—</td>
+<td>Enumerate every tag declared by the spec</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="intended-reasoning-flow">Intended Reasoning Flow</h2>
+<p>Instead of dumping the entire OpenAPI document into the system prompt,
+the agent discovers endpoints on demand:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>User → search_operations(&quot;books&quot;)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>     → describe_operation(&quot;get_books&quot;)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>     → GET(endpoint=&quot;/books&quot;, params={...})
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>     → response
+</code></pre></div>
+<p>This keeps prompt size constant <em>regardless of API size</em>.</p>
+<hr />
+<h2 id="shared-infrastructure">Shared Infrastructure</h2>
+<p>Every feature that works with the typed toolkit — authentication,
+retries, rate limiting, caching, pagination, logging — works with the
+generic toolkit <strong>without changing a single line of the middleware or
+provider code</strong>. The two toolkits share the same
+<a class="autorefs autorefs-internal" title="langchain_openapi_tools.executor.AsyncHTTPExecutor" href="../api/executor/#langchain_openapi_tools.executor.AsyncHTTPExecutor"><code>AsyncHTTPExecutor</code></a>
+instance.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">BearerAuthProvider</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">CacheMiddleware</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">GenericOpenAPIToolkit</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">InMemoryCacheBackend</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">RetryMiddleware</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">GenericOpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="s2">&quot;https://api.example.com/openapi.json&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">provider</span><span class="o">=</span><span class="n">BearerAuthProvider</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s2">&quot;…&quot;</span><span class="p">),</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="n">RetryMiddleware</span><span class="p">(</span><span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="n">CacheMiddleware</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">InMemoryCacheBackend</span><span class="p">(),</span> <span class="n">ttl</span><span class="o">=</span><span class="mi">60</span><span class="p">),</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="p">],</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="hybrid-mode">Hybrid Mode</h2>
+<p>Combine both worlds. Typed tools are generated for a curated subset of
+operations (via <code>typed_tags</code> or <code>typed_operations</code>); everything else
+remains reachable through the generic HTTP tools.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">GenericOpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">tools</span> <span class="o">=</span> <span class="n">toolkit</span><span class="o">.</span><span class="n">get_tools</span><span class="p">(</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">typed_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Books&quot;</span><span class="p">,</span> <span class="s2">&quot;Users&quot;</span><span class="p">],</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">)</span>
+</code></pre></div>
+<p><code>OpenAPIToolkit</code> also accepts <code>mode="generic"</code> / <code>mode="hybrid"</code> and
+transparently delegates, so existing setups can opt in without switching
+classes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAPIToolkit</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">OpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">tools</span> <span class="o">=</span> <span class="n">toolkit</span><span class="o">.</span><span class="n">get_tools</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span> <span class="n">typed_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Books&quot;</span><span class="p">])</span>
+</code></pre></div>
+<p>The default (<code>mode="typed"</code>) preserves full backward compatibility.</p>
+<hr />
+<h2 id="configuration">Configuration</h2>
+<p>Pass a
+<a class="autorefs autorefs-internal" title="langchain_openapi_tools.generic_toolkit.GenericToolkitConfig
+
+
+  
+      dataclass
+  " href="../api/generic_toolkit/#langchain_openapi_tools.generic_toolkit.GenericToolkitConfig"><code>GenericToolkitConfig</code></a>
+to customise the generic toolkit:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openapi_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericOpenAPIToolkit</span><span class="p">,</span> <span class="n">GenericToolkitConfig</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">GenericToolkitConfig</span><span class="p">(</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">include_http_methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">],</span>     <span class="c1"># limit exposed HTTP tools</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">include_discovery_tools</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>             <span class="c1"># toggle search/describe/list</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">typed_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Books&quot;</span><span class="p">],</span>                     <span class="c1"># default typed tags for hybrid</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="n">toolkit</span> <span class="o">=</span> <span class="n">GenericOpenAPIToolkit</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="operation-search-index">Operation Search Index</h2>
+<p>The discovery tools are backed by
+<a class="autorefs autorefs-internal" title="langchain_openapi_tools.search.OperationIndex" href="../api/search/#langchain_openapi_tools.search.OperationIndex"><code>OperationIndex</code></a>, an
+in-memory index that supports keyword, fuzzy, and tag/method filtering.
+<strong>No external vector database required.</strong></p>
+<p>Available programmatically via the toolkit:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">toolkit</span><span class="o">.</span><span class="n">list_operations</span><span class="p">()</span>                       <span class="c1"># summary list</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">toolkit</span><span class="o">.</span><span class="n">list_tags</span><span class="p">()</span>                             <span class="c1"># sorted tag set</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">toolkit</span><span class="o">.</span><span class="n">search_operations</span><span class="p">(</span><span class="s2">&quot;payments&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># ranked results</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">toolkit</span><span class="o">.</span><span class="n">describe_operation</span><span class="p">(</span><span class="s2">&quot;createPayment&quot;</span><span class="p">)</span>     <span class="c1"># full detail</span>
+</code></pre></div>
+<p>Scoring signals combined per candidate:</p>
+<ol>
+<li><strong>Substring match</strong> on operationId, summary, and path.</li>
+<li><strong>Token overlap</strong> against the entry's haystack.</li>
+<li><strong>Fuzzy ratio</strong> via <code>difflib.SequenceMatcher</code> as a tiebreaker.</li>
+</ol>
+<p>See the <a href="../api/search/">OperationIndex API reference</a> for details.</p>
+<hr />
+<h2 id="when-to-use-which-toolkit">When to Use Which Toolkit</h2>
+<ul>
+<li>Use the <strong>Typed</strong> toolkit when your API is small enough that all
+  operations fit comfortably in the prompt and you want the strictest
+  possible per-operation validation.</li>
+<li>Use the <strong>Generic</strong> toolkit for large or rapidly-changing APIs where
+  a constant tool surface with on-demand discovery is more important
+  than compile-time-shaped schemas.</li>
+<li>Use the <strong>Hybrid</strong> toolkit for enterprise APIs where a few endpoints
+  are hot paths that benefit from typed schemas while the long tail can
+  be reached generically.</li>
+</ul>
 
 
 

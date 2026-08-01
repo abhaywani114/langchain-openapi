@@ -62,6 +62,7 @@ nav:
   - Authentication: authentication.md
   - Middleware: middleware.md
   - Toolkit: toolkit.md
+  - Generic & Hybrid Toolkits: generic_toolkit.md
   - Examples:
       - Crossref API: examples/crossref.md
       - Swagger Petstore: examples/petstore.md
@@ -70,5 +71,7 @@ nav:
       - Loader: api/loader.md
       - Parser: api/parser.md
       - Toolkit: api/toolkit.md
+      - Generic Toolkit: api/generic_toolkit.md
+      - Operation Index: api/search.md
       - Executor: api/executor.md
       - Middleware: api/middleware.md

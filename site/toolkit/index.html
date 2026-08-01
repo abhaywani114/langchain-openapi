@@ -16,7 +16,7 @@
         <link rel="prev" href="../middleware/">
       
       
-        <link rel="next" href="../examples/crossref/">
+        <link rel="next" href="../generic_toolkit/">
       
       
         
@@ -561,6 +561,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#base-url-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base URL Resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tool-filtering-selection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -582,10 +593,48 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#execution-strategies-typed-generic-hybrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Strategies (Typed / Generic / Hybrid)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generic_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generic & Hybrid Toolkits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -610,10 +659,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
           
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   
@@ -631,8 +680,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -752,10 +801,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
         
           
-          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
             
   
   
@@ -773,8 +822,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_11">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -855,6 +904,62 @@
     
   
     Toolkit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/generic_toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generic Toolkit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operation Index
   
 
     
@@ -1008,6 +1113,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#base-url-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base URL Resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tool-filtering-selection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1023,6 +1139,17 @@
     <span class="md-ellipsis">
       
         Accessing Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execution-strategies-typed-generic-hybrid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Strategies (Typed / Generic / Hybrid)
       
     </span>
   </a>
@@ -1073,6 +1200,15 @@
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">)</span>
 </code></pre></div>
 <hr />
+<h2 id="base-url-resolution">Base URL Resolution</h2>
+<p>The toolkit determines the base URL used for HTTP requests in this order of precedence:</p>
+<ol>
+<li>Explicit <code>base_url</code> argument passed to <code>OpenAPIToolkit.__init__</code> / <code>from_url</code> / <code>from_file</code> / <code>from_dict</code>.</li>
+<li>The first entry in the spec's <code>servers</code> block (OpenAPI 3.x) or the URL synthesized from <code>host</code>/<code>basePath</code>/<code>schemes</code> (Swagger 2.0).</li>
+<li>When <code>OpenAPIToolkit.from_url(...)</code> is used and the spec has no <code>servers</code> (or Swagger 2.0 has no <code>host</code>), the source URL is used as a fallback: relative server URLs are resolved against it via <code>urljoin</code>, and a missing <code>servers</code> block defaults to the document's <code>scheme://host</code> origin — matching the OpenAPI 3.x specification.</li>
+</ol>
+<p>This means self-describing endpoints such as <code>https://fakerestapi.azurewebsites.net/swagger/v1/swagger.json</code> (an OpenAPI 3.0.1 document that omits the <code>servers</code> block) work out of the box without a manual <code>base_url</code>. For local files or in-memory dicts with no <code>servers</code>, pass <code>base_url</code> explicitly.</p>
+<hr />
 <h2 id="tool-filtering-selection">Tool Filtering &amp; Selection</h2>
 <p>Filter generated tools by HTTP methods, tags, or operation names:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Filter by HTTP Method</span>
@@ -1107,6 +1243,23 @@
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Get single tool by operation name</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">tool</span> <span class="o">=</span> <span class="n">toolkit</span><span class="o">.</span><span class="n">get_tool</span><span class="p">(</span><span class="s2">&quot;get_user_by_id&quot;</span><span class="p">)</span>
 </code></pre></div>
+<hr />
+<h2 id="execution-strategies-typed-generic-hybrid">Execution Strategies (Typed / Generic / Hybrid)</h2>
+<p>By default <code>OpenAPIToolkit.get_tools()</code> emits one LangChain
+<code>StructuredTool</code> per operation. For large APIs where that would exhaust
+the prompt window, <code>get_tools()</code> also accepts a <code>mode</code> argument that
+transparently delegates to the
+<a class="autorefs autorefs-internal" title="langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit" href="../api/generic_toolkit/#langchain_openapi_tools.generic_toolkit.GenericOpenAPIToolkit"><code>GenericOpenAPIToolkit</code></a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Constant surface: GET / POST / PUT / PATCH / DELETE +</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># search_operations / describe_operation / list_operations / list_tags.</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">generic_tools</span> <span class="o">=</span> <span class="n">toolkit</span><span class="o">.</span><span class="n">get_tools</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;generic&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Typed tools for hot paths, generic HTTP tools for everything else.</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">hybrid_tools</span> <span class="o">=</span> <span class="n">toolkit</span><span class="o">.</span><span class="n">get_tools</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span> <span class="n">typed_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Users&quot;</span><span class="p">])</span>
+</code></pre></div>
+<p>See the <a href="../generic_toolkit/">Generic &amp; Hybrid Toolkits</a> guide for the
+full comparison, discovery-tool reference, and hybrid-mode
+configuration.</p>
 
 
 
