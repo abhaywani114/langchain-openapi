@@ -3,7 +3,8 @@
 import logging
 import re
 from enum import Enum
-from typing import Any
+from functools import reduce
+from typing import Any, Union
 
 from pydantic import BaseModel, ConfigDict, Field, create_model
 
@@ -42,6 +43,65 @@ def map_schema_type_to_python(
         return Any
 
     return OPENAPI_TYPE_TO_PYTHON.get(type_val, Any)
+
+
+def _union_of(types: list[Any]) -> Any:
+    """Return a Union[...] annotation collapsing duplicates and empty lists."""
+    unique: list[Any] = []
+    for t in types:
+        if t is None:
+            continue
+        if t not in unique:
+            unique.append(t)
+    if not unique:
+        return Any
+    if len(unique) == 1:
+        return unique[0]
+    return reduce(lambda a, b: Union[a, b], unique)  # noqa: UP007
+
+
+def _merge_all_of(schemas: list[Schema]) -> Schema:
+    """Shallow-merge a list of subschemas into a single composite Schema.
+
+    Used to flatten ``allOf`` for the purposes of Pydantic model synthesis.
+    Properties from later subschemas override earlier ones; ``required``
+    lists are unioned.
+    """
+    merged = Schema()
+    merged_props: dict[str, Schema] = {}
+    merged_required: list[str] = []
+
+    for sub in schemas:
+        if sub.type and merged.type is None:
+            merged.type = sub.type
+        if sub.format and merged.format is None:
+            merged.format = sub.format
+        if sub.properties:
+            merged_props.update(sub.properties)
+        if sub.required:
+            for r in sub.required:
+                if r not in merged_required:
+                    merged_required.append(r)
+        if sub.description and merged.description is None:
+            merged.description = sub.description
+        if sub.default is not None and merged.default is None:
+            merged.default = sub.default
+        if sub.enum and merged.enum is None:
+            merged.enum = list(sub.enum)
+        if sub.items and merged.items is None:
+            merged.items = sub.items
+        merged.nullable = merged.nullable or sub.nullable
+        merged.read_only = merged.read_only or sub.read_only
+        merged.write_only = merged.write_only or sub.write_only
+        merged.deprecated = merged.deprecated or sub.deprecated
+
+    if merged_props:
+        merged.properties = merged_props
+        if merged.type is None:
+            merged.type = DataType.OBJECT
+    if merged_required:
+        merged.required = merged_required
+    return merged
 
 
 def to_camel_case(snake_str: str) -> str:
@@ -98,12 +158,14 @@ class PydanticFactory:
             field_name=field_name,
         )
 
+        nullable = bool(schema and schema.nullable)
+
         if default_val is not None:
             field_info = Field(default=default_val, description=desc)
-            annotation = py_type
+            annotation = py_type | None if nullable else py_type
         elif is_required:
             field_info = Field(..., description=desc)
-            annotation = py_type
+            annotation = py_type | None if nullable else py_type
         else:
             field_info = Field(default=None, description=desc)
             annotation = py_type | None
@@ -118,6 +180,32 @@ class PydanticFactory:
     ) -> Any:
         if schema is None:
             return str
+
+        # ``allOf`` — merge subschemas and synthesize a single Pydantic model.
+        if schema.all_of:
+            merged = _merge_all_of(schema.all_of)
+            if schema.properties:
+                merged = _merge_all_of([merged, schema])
+            return self._build_type_annotation(
+                schema=merged,
+                parent_name=parent_name,
+                field_name=field_name,
+            )
+
+        # ``oneOf`` / ``anyOf`` — emit a Union of subschema annotations.
+        variants = list(schema.one_of or []) + list(schema.any_of or [])
+        if variants:
+            variant_types: list[Any] = []
+            for i, sub in enumerate(variants):
+                variant_types.append(
+                    self._build_type_annotation(
+                        schema=sub,
+                        parent_name=parent_name,
+                        field_name=f"{field_name}_variant_{i}",
+                    )
+                )
+            union_ann = _union_of(variant_types)
+            return union_ann | None if schema.nullable else union_ann
 
         if schema.enum:
             enum_class_name = f"{parent_name}_{to_camel_case(field_name)}Enum"
@@ -159,6 +247,15 @@ class PydanticFactory:
                 )
                 return list[item_type]  # type: ignore[valid-type]
             return list[Any]
+
+        # OpenAPI 3.1 union types (``type: [X, Y]``) — emit Union[X, Y].
+        if isinstance(schema.type, list):
+            union_types = [
+                map_schema_type_to_python(t)
+                for t in schema.type
+                if t != "null"
+            ]
+            return _union_of(union_types)
 
         return map_schema_type_to_python(schema.type)
 
@@ -205,6 +302,11 @@ class SchemaConverter:
 
             body_schema = media_type.schema
             if body_schema:
+                # Flatten top-level ``allOf`` so downstream field-splitting
+                # sees the merged property set.
+                if body_schema.all_of and not body_schema.properties:
+                    body_schema = _merge_all_of(body_schema.all_of)
+
                 body_req = operation.request_body.required
                 body_desc = operation.request_body.description
 

@@ -69,9 +69,38 @@ from langchain_openapi_tools import OpenAPIToolkit
 
 ## Supported Specifications
 
-- ✅ **Swagger 2.0** (Automatically normalized to OpenAPI 3.0)
+- ✅ **Swagger 2.0** (Automatically normalized to OpenAPI 3.0 via the built-in adapter layer)
 - ✅ **OpenAPI 3.0.x** (JSON and YAML)
-- ✅ **OpenAPI 3.1.x** (JSON and YAML)
+- ✅ **OpenAPI 3.1.x** (JSON and YAML, including union `type` arrays, `oneOf` / `anyOf` / `allOf`, and `const`)
+
+> **Note:** Swagger 2.0 is commonly referred to as OpenAPI 2.0.
+
+### Compatibility Matrix
+
+| Feature                                | Swagger 2.0 | OpenAPI 3.0 | OpenAPI 3.1 |
+| -------------------------------------- | :---------: | :---------: | :---------: |
+| Path / query / header / cookie params  | ✅          | ✅          | ✅          |
+| `$ref` resolution (internal)           | ✅          | ✅          | ✅          |
+| Base URL from `host` + `basePath`      | ✅          | —           | —           |
+| Base URL from `servers[]`              | —           | ✅          | ✅          |
+| Fallback base URL from spec source URL | ✅          | ✅          | ✅          |
+| `application/json` request bodies      | ✅          | ✅          | ✅          |
+| `application/x-www-form-urlencoded`    | ✅          | ✅          | ✅          |
+| `multipart/form-data` (incl. files)    | ✅          | ✅          | ✅          |
+| `text/*` and `application/xml`         | ✅          | ✅          | ✅          |
+| Vendor `+json` media types             | ✅          | ✅          | ✅          |
+| `oneOf` / `anyOf` (as Python `Union`)  | —           | ✅          | ✅          |
+| `allOf` merge into single model        | —           | ✅          | ✅          |
+| `nullable: true` (3.0)                 | —           | ✅          | —           |
+| `type: ["string", "null"]` (3.1)       | —           | —           | ✅          |
+| `const`                                | —           | —           | ✅          |
+| `readOnly` / `writeOnly` / `deprecated`| ✅          | ✅          | ✅          |
+| Security: Bearer / API key / Basic     | ✅          | ✅          | ✅          |
+| Async execution (`httpx.AsyncClient`)  | ✅          | ✅          | ✅          |
+
+Not yet supported: `discriminator`-driven union routing, `patternProperties`,
+`$dynamicRef` / `$dynamicAnchor`, callbacks, links, webhooks, and XML request-body
+serialization from Python dicts.
 
 ---
 
@@ -215,4 +244,28 @@ toolkit = OpenAPIToolkit.from_url(
                      │
                      ▼
           LangChain StructuredTools
+```
+
+### Example:
+
+```python
+from langchain_openapi_tools import OpenAPIToolkit
+from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
+
+toolkit = OpenAPIToolkit.from_url(
+    "https://api.crossref.org/swagger-docs"
+)
+
+model = init_chat_model("openrouter:qwen/qwen3-32b:free")
+
+agent = create_agent(
+    model=model,
+    tools=toolkit.get_tools(tags=["Works"]),
+)
+
+response = agent.invoke({
+    "messages": "Find papers about Kashmir"
+})
+
 ```

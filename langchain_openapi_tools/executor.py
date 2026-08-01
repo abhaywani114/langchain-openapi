@@ -17,7 +17,7 @@ from langchain_openapi_tools.exceptions import (
     ResponseParsingError,
 )
 from langchain_openapi_tools.middleware import Middleware, MiddlewarePipeline
-from langchain_openapi_tools.models import Operation
+from langchain_openapi_tools.models import Operation, RequestBody
 from langchain_openapi_tools.providers import NoAuthProvider, RequestProvider
 from langchain_openapi_tools.utils import sanitize_request_log
 
@@ -34,6 +34,9 @@ class BuiltRequest:
     params: dict[str, Any] = field(default_factory=dict)
     json_body: Any = None
     cookies: dict[str, str] = field(default_factory=dict)
+    data: Any = None
+    files: dict[str, Any] | None = None
+    content: bytes | str | None = None
 
 
 @dataclass
@@ -124,18 +127,55 @@ class RequestBuilder:
             full_url = path_template
 
         json_body: Any = None
+        form_data: Any = None
+        multipart_files: dict[str, Any] | None = None
+        raw_content: bytes | str | None = None
+
         if operation.request_body:
+            body_value: Any
             if "body" in arguments:
-                json_body = arguments["body"]
+                body_value = arguments["body"]
             else:
                 unconsumed = {
                     k: v for k, v in arguments.items() if k not in consumed_args
                 }
-                if unconsumed:
-                    json_body = unconsumed
+                body_value = unconsumed if unconsumed else None
 
-            if json_body is not None and "Content-Type" not in headers:
-                headers["Content-Type"] = "application/json"
+            # StructuredTool validates args through a dynamic Pydantic model,
+            # so complex bodies arrive here as BaseModel instances. Serialize
+            # them to plain Python structures before dispatch so ``httpx`` /
+            # ``urlencode`` can encode them.
+            body_value = _coerce_body_value(body_value)
+
+            if body_value is not None:
+                content_type = _select_body_content_type(
+                    operation.request_body, headers.get("Content-Type")
+                )
+
+                if content_type.startswith("multipart/form-data"):
+                    multipart_files = _to_multipart_files(body_value)
+                    # httpx will set the Content-Type + boundary automatically.
+                    headers.pop("Content-Type", None)
+                elif content_type == "application/x-www-form-urlencoded":
+                    form_data = body_value
+                    headers.setdefault("Content-Type", content_type)
+                elif content_type.endswith("/json") or content_type.endswith("+json"):
+                    json_body = body_value
+                    headers.setdefault("Content-Type", "application/json")
+                elif (
+                    content_type.startswith("text/")
+                    or content_type == "application/xml"
+                ):
+                    raw_content = (
+                        body_value
+                        if isinstance(body_value, (str, bytes))
+                        else str(body_value)
+                    )
+                    headers.setdefault("Content-Type", content_type)
+                else:
+                    # Default: JSON encoding for unknown content types.
+                    json_body = body_value
+                    headers.setdefault("Content-Type", "application/json")
 
         return BuiltRequest(
             method=method,
@@ -144,7 +184,94 @@ class RequestBuilder:
             params=query_params,
             json_body=json_body,
             cookies=cookies,
+            data=form_data,
+            files=multipart_files,
+            content=raw_content,
         )
+
+
+_JSON_LIKE = ("application/json",)
+
+
+def _coerce_body_value(body_value: Any) -> Any:
+    """Convert Pydantic models / enum values inside a body into plain data.
+
+    ``StructuredTool`` runs incoming arguments through a dynamically
+    generated Pydantic model. Any request body typed as an object therefore
+    arrives here as a ``BaseModel`` instance (or a dict containing such
+    instances or ``Enum`` members). Convert everything back to JSON-safe
+    Python primitives before dispatching to httpx / urlencode.
+    """
+    if body_value is None:
+        return None
+    # Pydantic v2 BaseModel.
+    if hasattr(body_value, "model_dump"):
+        try:
+            return body_value.model_dump(mode="json", exclude_none=True)
+        except Exception:
+            return body_value.model_dump()
+    if isinstance(body_value, dict):
+        return {k: _coerce_body_value(v) for k, v in body_value.items()}
+    if isinstance(body_value, list):
+        return [_coerce_body_value(v) for v in body_value]
+    # Enum values from generated dynamic Enums.
+    value_attr = getattr(body_value, "value", None)
+    if value_attr is not None and not callable(value_attr) and not isinstance(
+        body_value, (str, int, float, bool, bytes)
+    ):
+        return value_attr
+    return body_value
+
+
+def _select_body_content_type(
+    request_body: "RequestBody", explicit_header: str | None
+) -> str:
+    """Pick the request body's Content-Type in a version-agnostic way.
+
+    Priority:
+    1. Explicit ``Content-Type`` header supplied via arguments.
+    2. ``application/json`` (or ``+json`` variant) if the operation declares one.
+    3. The first declared media type on the operation.
+    4. Fallback to ``application/json``.
+    """
+    if explicit_header:
+        return explicit_header
+
+    content = request_body.content or {}
+    if not content:
+        return "application/json"
+
+    for key in content.keys():
+        if key == "application/json" or key.endswith("+json") or key.startswith(
+            "application/json"
+        ):
+            return key
+    # First declared media type wins if no JSON variant present.
+    return next(iter(content.keys()))
+
+
+def _to_multipart_files(body: Any) -> dict[str, Any]:
+    """Convert a body dict into an httpx-compatible ``files`` mapping.
+
+    Values that are bytes / file-like tuples are treated as file uploads;
+    other scalars are sent as regular multipart form fields (via httpx's
+    ``(None, value)`` tuple convention).
+    """
+    if not isinstance(body, dict):
+        return {"file": body}
+
+    files: dict[str, Any] = {}
+    for key, value in body.items():
+        if isinstance(value, (bytes, bytearray)):
+            files[key] = (key, bytes(value))
+        elif isinstance(value, tuple):
+            files[key] = value
+        elif hasattr(value, "read"):
+            files[key] = (getattr(value, "name", key), value)
+        else:
+            # Regular form field alongside the file upload(s).
+            files[key] = (None, str(value))
+    return files
 
 
 class ResponseParser:
@@ -253,9 +380,20 @@ class AsyncHTTPExecutor:
             "url": req_data.url,
             "headers": req_data.headers,
             "params": req_data.params,
-            "json": req_data.json_body,
             "timeout": self.timeout,
         }
+
+        # Media-type-aware body assignment: exactly one of these should be set.
+        if req_data.files is not None:
+            kwargs["files"] = req_data.files
+            if req_data.data is not None:
+                kwargs["data"] = req_data.data
+        elif req_data.data is not None:
+            kwargs["data"] = req_data.data
+        elif req_data.content is not None:
+            kwargs["content"] = req_data.content
+        elif req_data.json_body is not None:
+            kwargs["json"] = req_data.json_body
 
         request = client.build_request(**kwargs)
 

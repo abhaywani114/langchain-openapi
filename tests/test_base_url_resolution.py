@@ -22,7 +22,6 @@ import pytest
 import respx
 
 from langchain_openapi_tools import (
-    AsyncHTTPExecutor,
     OpenAPILoader,
     OpenAPIParser,
     OpenAPISpec,
@@ -195,7 +194,9 @@ def test_request_builder_produces_absolute_url_for_fakerestapi() -> None:
     operations = parser.parse()
 
     get_activities = next(
-        op for op in operations if op.path == "/api/v1/Activities" and op.method.value == "GET"
+        op
+        for op in operations
+        if op.path == "/api/v1/Activities" and op.method.value == "GET"
     )
     builder = RequestBuilder(base_url=spec.servers[0])
     built = builder.build(get_activities, arguments={})

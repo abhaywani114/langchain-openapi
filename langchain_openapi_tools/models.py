@@ -1,9 +1,13 @@
 """Internal normalized models for OpenAPI specification entities.
 
-Note on Limitations:
-    Current parser models skip polymorphic constructs (oneOf, anyOf, allOf,
-    discriminator), callbacks, links, webhooks, and complex example inheritance
-    patterns. These features will be evaluated in future milestones.
+The models are shared across Swagger 2.0, OpenAPI 3.0, and OpenAPI 3.1
+after normalization. Version-specific quirks (``nullable``, list-typed
+``type``, ``oneOf``/``anyOf``/``allOf`` composition, ``const``,
+``readOnly``/``writeOnly``, ``deprecated``) are all mapped onto this
+common shape so downstream components remain version-agnostic.
+
+Known unsupported constructs: discriminator, callbacks, links, webhooks,
+``$dynamicRef``/``$dynamicAnchor``, and ``patternProperties``.
 """
 
 from dataclasses import dataclass, field
@@ -18,14 +22,23 @@ class Schema:
 
     Attributes:
         type: The data type (e.g. 'string', 'integer', 'object', 'array').
+            May also be a list of types (OpenAPI 3.1 / JSON Schema 2020-12).
         format: Optional format modifier (e.g. 'date-time', 'email', 'uuid').
         properties: Dictionary of property schemas if type is 'object'.
         items: Schema of array elements if type is 'array'.
         required: List of required property names if type is 'object'.
         enum: List of allowed values for enum types.
+        const: JSON Schema ``const`` — a single accepted literal value.
         default: Default value for the schema.
-        nullable: Whether null values are permitted.
+        nullable: Whether null values are permitted (either OpenAPI 3.0
+            ``nullable: true`` or a ``"null"`` member of ``type`` in 3.1).
         description: Description of the schema element.
+        one_of: JSON Schema ``oneOf`` composition — value must match exactly one.
+        any_of: JSON Schema ``anyOf`` composition — value must match at least one.
+        all_of: JSON Schema ``allOf`` composition — value must match all subschemas.
+        read_only: When True, the property is only present in responses.
+        write_only: When True, the property is only accepted in requests.
+        deprecated: When True, the schema is marked deprecated.
     """
 
     type: DataType | str | list[DataType | str] | None = None
@@ -34,9 +47,16 @@ class Schema:
     items: "Schema | None" = None
     required: list[str] | None = None
     enum: list[Any] | None = None
+    const: Any = None
     default: Any = None
     nullable: bool = False
     description: str | None = None
+    one_of: list["Schema"] | None = None
+    any_of: list["Schema"] | None = None
+    all_of: list["Schema"] | None = None
+    read_only: bool = False
+    write_only: bool = False
+    deprecated: bool = False
 
 
 @dataclass

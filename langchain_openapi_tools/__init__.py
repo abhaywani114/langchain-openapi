@@ -5,6 +5,14 @@ executing HTTP requests asynchronously, configuring request providers,
 applying production middleware, and exporting dynamic LangChain tools.
 """
 
+from langchain_openapi_tools.adapters import (
+    OpenAPI3Adapter,
+    SpecAdapter,
+    Swagger2Adapter,
+    detect_spec_version,
+    normalize_spec,
+    select_adapter,
+)
 from langchain_openapi_tools.enums import DataType, HTTPMethod, ParameterLocation
 from langchain_openapi_tools.exceptions import (
     AuthenticationError,
@@ -107,6 +115,7 @@ __all__ = [
     "MiddlewarePipeline",
     "NextCallable",
     "NoAuthProvider",
+    "OpenAPI3Adapter",
     "OpenAPIError",
     "OpenAPILoader",
     "OpenAPIParser",
@@ -133,15 +142,20 @@ __all__ = [
     "RetryMiddleware",
     "Schema",
     "SchemaConverter",
+    "SpecAdapter",
     "SpecLoadError",
     "StaticHeadersProvider",
+    "Swagger2Adapter",
     "SwaggerNormalizer",
     "UnsupportedVersionError",
     "__version__",
     "build_tool_description",
     "create_async_client",
+    "detect_spec_version",
     "format_tool_name",
     "generate_fallback_operation_name",
     "map_schema_type_to_python",
+    "normalize_spec",
     "sanitize_request_log",
+    "select_adapter",
 ]

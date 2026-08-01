@@ -62,6 +62,7 @@ class OpenAPISpec:
         servers: list[str],
         paths: dict[str, Any],
         source_url: str | None = None,
+        spec_family: str = "openapi30",
     ) -> None:
         self.raw = raw
         self.version = version
@@ -70,6 +71,7 @@ class OpenAPISpec:
         self.servers = servers
         self.paths = paths
         self.source_url = source_url
+        self.spec_family = spec_family
 
     @classmethod
     def from_dict(
@@ -86,13 +88,9 @@ class OpenAPISpec:
                 ``host`` values (Swagger 2.0) so the toolkit can always build
                 absolute request URLs.
         """
-        swagger_ver = str(spec_dict.get("swagger", ""))
-        if spec_dict.get("swagger") == "2.0" or swagger_ver.startswith("2."):
-            from langchain_openapi_tools.swagger import SwaggerNormalizer
+        from langchain_openapi_tools.adapters import normalize_spec
 
-            spec_dict = SwaggerNormalizer(
-                spec_dict, source_url=source_url
-            ).normalize()
+        spec_dict, spec_family = normalize_spec(spec_dict, source_url=source_url)
 
         version = str(spec_dict.get("openapi", "3.0.0"))
         info = spec_dict.get("info")
@@ -136,10 +134,14 @@ class OpenAPISpec:
             servers=servers,
             paths=paths,
             source_url=source_url,
+            spec_family=spec_family,
         )
 
     def __repr__(self) -> str:
-        return f"<OpenAPISpec title={self.title!r} version={self.version!r}>"
+        return (
+            f"<OpenAPISpec title={self.title!r} version={self.version!r} "
+            f"family={self.spec_family!r}>"
+        )
 
 
 class ReferenceResolver:
@@ -499,7 +501,10 @@ class OpenAPIParser:
                         parsed_types.append(DataType(t))
                     except ValueError:
                         parsed_types.append(t)
-            type_val = parsed_types
+            if len(parsed_types) == 1:
+                type_val = parsed_types[0]
+            else:
+                type_val = parsed_types
 
         props_dict = raw_schema.get("properties")
         properties: dict[str, Schema] | None = None
@@ -519,6 +524,10 @@ class OpenAPIParser:
         enum_val = raw_schema.get("enum")
         req_list = raw_schema.get("required")
 
+        one_of = self._parse_schema_list(raw_schema.get("oneOf"))
+        any_of = self._parse_schema_list(raw_schema.get("anyOf"))
+        all_of = self._parse_schema_list(raw_schema.get("allOf"))
+
         return Schema(
             type=type_val,
             format=str(format_val) if format_val is not None else None,
@@ -526,7 +535,26 @@ class OpenAPIParser:
             items=items,
             required=[str(r) for r in req_list] if isinstance(req_list, list) else None,
             enum=list(enum_val) if isinstance(enum_val, list) else None,
+            const=raw_schema.get("const"),
             default=raw_schema.get("default"),
             nullable=nullable,
             description=str(desc) if desc is not None else None,
+            one_of=one_of,
+            any_of=any_of,
+            all_of=all_of,
+            read_only=bool(raw_schema.get("readOnly", False)),
+            write_only=bool(raw_schema.get("writeOnly", False)),
+            deprecated=bool(raw_schema.get("deprecated", False)),
         )
+
+    def _parse_schema_list(
+        self, raw: Any
+    ) -> list[Schema] | None:
+        if not isinstance(raw, list):
+            return None
+        result: list[Schema] = []
+        for item in raw:
+            parsed = self._parse_schema(item) if isinstance(item, dict) else None
+            if parsed is not None:
+                result.append(parsed)
+        return result or None

@@ -30,13 +30,24 @@ The library is structured as a linear transform pipeline with isolated responsib
  │                     OpenAPI Loader                     │
  │          - Parsing (JSON / YAML)                       │
  │          - Ref Resolution ($ref expansion)             │
+ │          - Remembers spec source URL                   │
+ └───────────────────────────┬────────────────────────────┘
+                             │
+                             ▼
+ ┌────────────────────────────────────────────────────────┐
+ │                    Spec Adapter Layer                  │
+ │          - Version detection (swagger2 / 3.0 / 3.1)    │
+ │          - Swagger2Adapter → OpenAPI 3.0 normalization │
+ │          - OpenAPI3Adapter (pass-through, 3.0 & 3.1)   │
  └───────────────────────────┬────────────────────────────┘
                              │
                              ▼
  ┌────────────────────────────────────────────────────────┐
  │                    Internal Models                     │
  │          - Parsed Spec & Operation trees               │
- │          - Schema normalization                        │
+ │          - Schema normalization (incl. oneOf/anyOf/    │
+ │            allOf / const / read-write flags)           │
+ │          - `spec_family` tag preserved from adapter    │
  └───────────────────────────┬────────────────────────────┘
                              │
                              ▼
@@ -77,7 +88,29 @@ The **OpenAPI Loader** is responsible for reading OpenAPI specifications from lo
 
 When loading from a URL, the loader preserves the source URL on the resulting `OpenAPISpec` (`spec.source_url`). This lets `OpenAPISpec.from_dict` and `SwaggerNormalizer` resolve relative `servers` entries and missing `host` fields to absolute URLs, so `RequestBuilder` always receives an absolute base URL — even for specs like `https://fakerestapi.azurewebsites.net/swagger/v1/swagger.json` that omit the `servers` block entirely.
 
-### 3.2 Internal Models & Specification Parser
+### 3.2 Spec Adapter Layer
+
+The **Spec Adapter Layer** (`langchain_openapi_tools.adapters`) provides a
+uniform entry point across every supported specification family. It exposes:
+
+* `detect_spec_version(spec_dict) -> Literal["swagger2", "openapi30", "openapi31"]`
+* `SpecAdapter` (`typing.Protocol`) — the shared adapter interface.
+* `Swagger2Adapter` — wraps `SwaggerNormalizer` to lift Swagger 2.0 documents
+  into an OpenAPI 3.0-compatible dictionary while remembering the source URL
+  so `host`/`basePath` gaps can be filled in from the fetch location.
+* `OpenAPI3Adapter` — a pass-through adapter for both OpenAPI 3.0.x and
+  3.1.x documents.
+* `select_adapter(spec_dict)` and `normalize_spec(spec_dict, source_url)` —
+  convenience helpers that pick the right adapter and return a `(normalized
+  dict, spec_family)` tuple.
+
+`OpenAPISpec.from_dict` calls `normalize_spec` before parsing so downstream
+components (`OpenAPIParser`, `SchemaConverter`, `RequestBuilder`) only ever
+see a single canonical shape. `OpenAPISpec.spec_family` records which
+family the document originated from, which is useful for logging and for
+version-aware feature toggles in the future.
+
+### 3.3 Internal Models & Specification Parser
 
 The **OpenAPI Parser** (`OpenAPIParser`) transforms an `OpenAPISpec` into strongly typed, normalized Python dataclasses using the `ReferenceResolver` for local `$ref` pointer resolution:
 
@@ -101,16 +134,19 @@ OpenAPI Spec (File / URL / Dict)
 * **`RequestBody`**: Defines the payload expected by POST/PUT/PATCH operations (`required`, `description`, `content`).
 * **`Response`**: Defines an HTTP response status definition (`status_code`, `description`, `content`).
 * **`MediaType`**: Maps a MIME content-type string to its schema and example payloads (`content_type`, `schema`, `example`, `examples`).
-* **`Schema`**: Normalized schema structure representing primitive and complex types (`type`, `format`, `properties`, `items`, `required`, `enum`, `default`, `nullable`, `description`).
+* **`Schema`**: Normalized schema structure representing primitive and complex types (`type`, `format`, `properties`, `items`, `required`, `enum`, `default`, `nullable`, `description`, `const`, `one_of`, `any_of`, `all_of`, `read_only`, `write_only`, `deprecated`).
 
 #### Current Scope Limitations
 
-The Milestone 3 parser intentionally skips:
-- Polymorphic composition keywords (`oneOf`, `anyOf`, `allOf`, `discriminator`).
+The parser handles JSON Schema union keywords (`oneOf`, `anyOf`, `allOf`) and
+OpenAPI 3.1 features such as list-form `type` and `const`, but intentionally
+skips:
+- `discriminator`-driven union routing.
 - OpenAPI callbacks, links, and webhooks.
+- `patternProperties`, `$dynamicRef`, `$dynamicAnchor`.
 - Advanced example inheritance chains.
 
-### 3.3 Schema Converter
+### 3.4 Schema Converter
 
 The **Schema Converter** (`SchemaConverter` and `PydanticFactory`) converts internal schema models (`Schema`) into dynamic Pydantic `BaseModel` classes using `pydantic.create_model()`.
 
@@ -137,6 +173,11 @@ Dynamic Pydantic Model (type[BaseModel])
 | `array` | `list[T]` | Recursively typed items (e.g. `list[str]`) |
 | `object` | Dynamic `BaseModel` | Dynamic nested models (e.g. `SearchWorksInput_Address`) |
 | `enum` | Dynamic `Enum` | String Enum subclass (e.g. `SortEnum`) |
+| `oneOf` / `anyOf` | `typing.Union[...]` | Variants are recursively converted |
+| `allOf` | Merged `BaseModel` | Properties and `required` sets are combined |
+| `type: [X, "null"]` | `Optional[X]` | 3.1-style nullable union |
+| `nullable: true` | `Optional[X]` | 3.0-style nullable flag |
+| `const` | `Literal[value]` | Fixed constant value |
 
 #### Model Naming Conventions
 
@@ -146,13 +187,14 @@ Dynamic Pydantic Model (type[BaseModel])
 
 #### Current Limitations
 
-The converter currently skips:
-- Polymorphic composition keywords (`oneOf`, `anyOf`, `allOf`, `discriminator`).
+The converter now covers `oneOf` / `anyOf` / `allOf`, list-form `type`,
+`nullable`, and `const`. It intentionally does not yet cover:
+- `discriminator`-driven union routing (variants are unions without tag dispatch).
 - Recursive schemas.
-- XML schema options.
-- Complex union types beyond `Optional`.
+- XML schema-driven request serialization.
+- `patternProperties`, `$dynamicRef`, `$dynamicAnchor`.
 
-### 3.4 Async HTTP Executor Engine
+### 3.5 Async HTTP Executor Engine
 
 The **Async HTTP Executor** (`AsyncHTTPExecutor`) executes an `Operation` asynchronously using `httpx.AsyncClient`, transforming inputs into normalized `ResponseData` instances.
 
@@ -192,11 +234,11 @@ OpenAPIError
       └── ExecutionTimeoutError
 ```
 
-### 3.5 Authentication Provider
+### 3.6 Authentication Provider
 
 The **Authentication Provider** manages auth headers and query parameters dynamically. It supports multiple authentication schemes (API Key, HTTP Bearer, HTTP Basic, OAuth2) and securely injects credentials into outbound HTTP requests without exposing secret values to the LLM agent or tool definitions.
 
-### 3.6 Tool Generator
+### 3.7 Tool Generator
 
 The **Tool Generator** acts as the high-level factory interface for end users. It converts parsed operations into `langchain_core.tools.BaseTool` instances. It supports configuration options such as filtering by HTTP method, operation tags, or path patterns, as well as customizing tool naming conventions and prompt description templates.
 

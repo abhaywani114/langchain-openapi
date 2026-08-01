@@ -61,7 +61,10 @@ def test_load_dict() -> None:
     assert spec.servers == ["https://api.example.com/v1"]
     assert "/pets" in spec.paths
     assert spec.raw == VALID_SPEC_DICT
-    assert repr(spec) == "<OpenAPISpec title='Sample Petstore API' version='3.0.3'>"
+    assert repr(spec) == (
+        "<OpenAPISpec title='Sample Petstore API' version='3.0.3' "
+        "family='openapi30'>"
+    )
 
 
 def test_load_json_file(tmp_path: Path) -> None:
