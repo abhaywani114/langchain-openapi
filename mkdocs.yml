@@ -1,9 +1,9 @@
 site_name: langchain-openapi
 site_description: Convert OpenAPI v3.0 & v3.1 specifications into native, type-safe LangChain tools for AI agents.
-site_url: https://github.com/langchain-ai/langchain-openapi
+site_url: https://github.com/abhaywani114/langchain-openapi
 
-repo_name: langchain-ai/langchain-openapi
-repo_url: https://github.com/langchain-ai/langchain-openapi
+repo_name: abhaywani114/langchain-openapi
+repo_url: https://github.com/abhaywani114/langchain-openapi
 
 theme:
   name: material
@@ -63,7 +63,6 @@ nav:
   - Toolkit: toolkit.md
   - Examples:
       - Crossref API: examples/crossref.md
-      - GitHub API: examples/github.md
       - Swagger Petstore: examples/petstore.md
   - Contributing: contributing.md
   - API Reference:
