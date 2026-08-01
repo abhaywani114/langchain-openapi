@@ -2,13 +2,28 @@
 
 import copy
 from typing import Any
+from urllib.parse import urlparse
 
 
 class SwaggerNormalizer:
     """Normalizes raw Swagger 2.0 specification dictionary into OpenAPI 3.0 format."""
 
-    def __init__(self, raw_spec: dict[str, Any]) -> None:
+    def __init__(
+        self,
+        raw_spec: dict[str, Any],
+        source_url: str | None = None,
+    ) -> None:
+        """Initialize the normalizer.
+
+        Args:
+            raw_spec: Raw Swagger 2.0 specification dictionary.
+            source_url: Optional URL the specification was fetched from. Used
+                to fill in ``host`` / ``schemes`` when the spec omits them,
+                which is common for APIs that self-describe (e.g. Azure /
+                ASP.NET Swashbuckle endpoints).
+        """
         self.raw = copy.deepcopy(raw_spec)
+        self.source_url = source_url
 
     def normalize(self) -> dict[str, Any]:
         """Convert Swagger 2.0 spec dictionary into an OpenAPI 3.0 compliant dictionary.
@@ -60,6 +75,16 @@ class SwaggerNormalizer:
         host = str(spec.get("host", "")).strip()
         base_path = str(spec.get("basePath", "")).strip()
         schemes = spec.get("schemes", [])
+
+        # Swagger 2.0: if host is missing, the API is served from the same host
+        # as the specification itself. Fall back to the document location so
+        # RequestBuilder can construct absolute URLs.
+        source_parsed = urlparse(self.source_url) if self.source_url else None
+
+        if not host and source_parsed and source_parsed.netloc:
+            host = source_parsed.netloc
+            if (not isinstance(schemes, list) or not schemes) and source_parsed.scheme:
+                schemes = [source_parsed.scheme]
 
         if host:
             if "://" in host:

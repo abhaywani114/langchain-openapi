@@ -39,7 +39,7 @@ OpenAPI Spec (JSON / YAML / Dict)
 ## Pipeline Components
 
 ### 1. OpenAPILoader
-In-gests raw JSON/YAML specifications from local disk files, remote HTTP endpoints, or in-memory dictionaries. Normalizes encoding and format.
+In-gests raw JSON/YAML specifications from local disk files, remote HTTP endpoints, or in-memory dictionaries. Normalizes encoding and format. When loading from a URL, the loader retains the source URL on the resulting `OpenAPISpec` so relative `servers` entries (OpenAPI 3.x) and missing `host` values (Swagger 2.0) can be resolved to absolute request URLs downstream.
 
 ### 2. OpenAPIParser
 Translates raw specification dictionaries into strongly-typed internal data models (`Operation`, `Parameter`, `RequestBody`, `Response`, `Schema`). Resolves internal `$ref` pointers using `ReferenceResolver`.

@@ -3,6 +3,7 @@
 import logging
 import re
 from typing import Any
+from urllib.parse import urljoin, urlparse, urlunparse
 
 from langchain_openapi_tools.enums import DataType, HTTPMethod, ParameterLocation
 from langchain_openapi_tools.exceptions import InvalidSpecError
@@ -18,6 +19,37 @@ from langchain_openapi_tools.models import (
 logger = logging.getLogger(__name__)
 
 
+def _document_origin(source_url: str | None) -> str | None:
+    """Return the ``scheme://host[:port]`` origin of a document URL, if any."""
+    if not source_url:
+        return None
+    parsed = urlparse(source_url)
+    if not parsed.scheme or not parsed.netloc:
+        return None
+    return urlunparse((parsed.scheme, parsed.netloc, "", "", "", ""))
+
+
+def _resolve_server_url(url: str, source_url: str | None) -> str:
+    """Resolve a raw server URL against the document's ``source_url``.
+
+    OpenAPI 3.x allows relative server URLs (e.g. ``/`` or ``/api/v2``), which
+    are interpreted relative to the location of the specification document
+    itself. This helper turns those into absolute URLs when a ``source_url``
+    is available.
+    """
+    if not url:
+        url = "/"
+
+    parsed = urlparse(url)
+    if parsed.scheme and parsed.netloc:
+        return url
+
+    if not source_url:
+        return url
+
+    return urljoin(source_url, url)
+
+
 class OpenAPISpec:
     """Normalized internal representation of an OpenAPI specification."""
 
@@ -29,6 +61,7 @@ class OpenAPISpec:
         description: str | None,
         servers: list[str],
         paths: dict[str, Any],
+        source_url: str | None = None,
     ) -> None:
         self.raw = raw
         self.version = version
@@ -36,15 +69,30 @@ class OpenAPISpec:
         self.description = description
         self.servers = servers
         self.paths = paths
+        self.source_url = source_url
 
     @classmethod
-    def from_dict(cls, spec_dict: dict[str, Any]) -> "OpenAPISpec":
-        """Construct an OpenAPISpec instance from a raw dictionary."""
+    def from_dict(
+        cls,
+        spec_dict: dict[str, Any],
+        source_url: str | None = None,
+    ) -> "OpenAPISpec":
+        """Construct an OpenAPISpec instance from a raw dictionary.
+
+        Args:
+            spec_dict: Raw OpenAPI/Swagger dictionary.
+            source_url: Optional URL the specification was fetched from. Used to
+                resolve relative ``servers`` entries (OpenAPI 3.x) and missing
+                ``host`` values (Swagger 2.0) so the toolkit can always build
+                absolute request URLs.
+        """
         swagger_ver = str(spec_dict.get("swagger", ""))
         if spec_dict.get("swagger") == "2.0" or swagger_ver.startswith("2."):
             from langchain_openapi_tools.swagger import SwaggerNormalizer
 
-            spec_dict = SwaggerNormalizer(spec_dict).normalize()
+            spec_dict = SwaggerNormalizer(
+                spec_dict, source_url=source_url
+            ).normalize()
 
         version = str(spec_dict.get("openapi", "3.0.0"))
         info = spec_dict.get("info")
@@ -65,7 +113,16 @@ class OpenAPISpec:
                     and "url" in server
                     and isinstance(server["url"], str)
                 ):
-                    servers.append(server["url"])
+                    servers.append(_resolve_server_url(server["url"], source_url))
+
+        # OpenAPI 3.x default: if servers is missing, treat as [{"url": "/"}]
+        # resolved against the document location. This is the fix for specs
+        # like https://fakerestapi.azurewebsites.net/swagger/v1/swagger.json
+        # that omit the ``servers`` block entirely.
+        if not servers and source_url:
+            origin = _document_origin(source_url)
+            if origin:
+                servers.append(origin)
 
         paths = spec_dict.get("paths", {})
         if not isinstance(paths, dict):
@@ -78,6 +135,7 @@ class OpenAPISpec:
             description=description,
             servers=servers,
             paths=paths,
+            source_url=source_url,
         )
 
     def __repr__(self) -> str:
@@ -176,20 +234,38 @@ class OpenAPIParser:
     """Parser for converting an OpenAPISpec into normalized internal Python models."""
 
     def __init__(self, spec: OpenAPISpec) -> None:
-        swagger_ver = str(spec.raw.get("swagger", ""))
-        if spec.raw.get("swagger") == "2.0" or swagger_ver.startswith("2."):
-            from langchain_openapi_tools.swagger import SwaggerNormalizer
-
-            normalized_raw = SwaggerNormalizer(spec.raw).normalize()
-            spec = OpenAPISpec.from_dict(normalized_raw)
+        # ``OpenAPISpec.from_dict`` is the single source of truth for Swagger
+        # 2.0 → OpenAPI 3.x normalization; ``spec.raw`` is guaranteed to be in
+        # the OpenAPI 3.x shape by the time it reaches the parser.
         self._spec = spec
         self._resolver = ReferenceResolver(spec.raw)
+
+    def _extract_servers(self, raw_servers: Any) -> list[str]:
+        servers: list[str] = []
+        if isinstance(raw_servers, list):
+            for server in raw_servers:
+                if (
+                    isinstance(server, dict)
+                    and "url" in server
+                    and isinstance(server["url"], str)
+                ):
+                    servers.append(
+                        _resolve_server_url(server["url"], self._spec.source_url)
+                    )
+                elif isinstance(server, str):
+                    servers.append(
+                        _resolve_server_url(server, self._spec.source_url)
+                    )
+        return servers
 
     def parse(self) -> list[Operation]:
         """Parse all paths and operations in the specification."""
         logger.info("Parsing OpenAPI operations for '%s'", self._spec.title)
         resolved_spec = self._resolver.resolve(self._spec.raw)
         global_security = resolved_spec.get("security", [])
+        global_servers = (
+            self._extract_servers(resolved_spec.get("servers")) or self._spec.servers
+        )
 
         operations: list[Operation] = []
         paths: dict[str, Any] = resolved_spec.get("paths", {})
@@ -198,6 +274,9 @@ class OpenAPIParser:
             if not isinstance(path_item, dict):
                 continue
 
+            path_servers = (
+                self._extract_servers(path_item.get("servers")) or global_servers
+            )
             path_params = self._parse_parameters(path_item.get("parameters", []))
 
             for key, val in path_item.items():
@@ -208,12 +287,17 @@ class OpenAPIParser:
                     continue
 
                 method = HTTPMethod(key.upper())
+                op_servers = (
+                    self._extract_servers(val.get("servers")) or path_servers
+                )
+
                 operation = self._parse_operation(
                     method=method,
                     path=path,
                     op_dict=val,
                     path_params=path_params,
                     global_security=global_security,
+                    servers=op_servers,
                 )
                 operations.append(operation)
 
@@ -227,6 +311,7 @@ class OpenAPIParser:
         op_dict: dict[str, Any],
         path_params: list[Parameter],
         global_security: list[dict[str, list[str]]],
+        servers: list[str],
     ) -> Operation:
         explicit_id = op_dict.get("operationId")
         if explicit_id and isinstance(explicit_id, str):
@@ -267,6 +352,7 @@ class OpenAPIParser:
             responses=responses,
             deprecated=deprecated,
             security=security if isinstance(security, list) else [],
+            servers=servers,
         )
 
     def _parse_parameters(self, raw_params: list[Any]) -> list[Parameter]:

@@ -24,15 +24,21 @@ class OpenAPILoader:
         self,
         load_fn: Callable[[], dict[str, Any]],
         source_info: str,
+        source_url: str | None = None,
     ) -> None:
         """Initialize loader with a fetch callable and a source description string.
 
         Args:
             load_fn: A zero-argument callable that returns a raw spec dictionary.
             source_info: Human-readable description of the source for logging.
+            source_url: Optional absolute URL the specification was fetched
+                from. Preserved on the resulting ``OpenAPISpec`` so relative
+                ``servers`` entries and specs with no ``servers`` block can be
+                resolved to absolute request URLs.
         """
         self._load_fn = load_fn
         self._source_info = source_info
+        self._source_url = source_url
 
     @classmethod
     def from_url(
@@ -71,7 +77,11 @@ class OpenAPILoader:
 
             return parse_json_or_yaml(content)
 
-        return cls(load_fn=_fetch_from_url, source_info=f"URL '{url}'")
+        return cls(
+            load_fn=_fetch_from_url,
+            source_info=f"URL '{url}'",
+            source_url=url,
+        )
 
     @classmethod
     def from_file(cls, file_path: str | Path) -> "OpenAPILoader":
@@ -137,12 +147,7 @@ class OpenAPILoader:
         """
         raw_data = self._load_fn()
         validate_raw_spec(raw_data)
-        swagger_ver = str(raw_data.get("swagger", ""))
-        if raw_data.get("swagger") == "2.0" or swagger_ver.startswith("2."):
-            from langchain_openapi_tools.swagger import SwaggerNormalizer
-
-            raw_data = SwaggerNormalizer(raw_data).normalize()
-        spec = OpenAPISpec.from_dict(raw_data)
+        spec = OpenAPISpec.from_dict(raw_data, source_url=self._source_url)
 
         logger.info(
             "Successfully loaded OpenAPI spec '%s' (OpenAPI version %s) from %s",

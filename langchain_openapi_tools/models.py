@@ -144,3 +144,4 @@ class Operation:
     responses: dict[str, Response] = field(default_factory=dict)
     deprecated: bool = False
     security: list[dict[str, list[str]]] = field(default_factory=list)
+    servers: list[str] = field(default_factory=list)

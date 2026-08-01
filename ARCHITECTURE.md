@@ -75,6 +75,8 @@ The library is structured as a linear transform pipeline with isolated responsib
 
 The **OpenAPI Loader** is responsible for reading OpenAPI specifications from local file paths, raw strings, or remote HTTP URLs. It handles format auto-detection (JSON vs. YAML), syntax validation, and recursively resolves relative and external `$ref` pointers into a unified, flattened schema representation.
 
+When loading from a URL, the loader preserves the source URL on the resulting `OpenAPISpec` (`spec.source_url`). This lets `OpenAPISpec.from_dict` and `SwaggerNormalizer` resolve relative `servers` entries and missing `host` fields to absolute URLs, so `RequestBuilder` always receives an absolute base URL — even for specs like `https://fakerestapi.azurewebsites.net/swagger/v1/swagger.json` that omit the `servers` block entirely.
+
 ### 3.2 Internal Models & Specification Parser
 
 The **OpenAPI Parser** (`OpenAPIParser`) transforms an `OpenAPISpec` into strongly typed, normalized Python dataclasses using the `ReferenceResolver` for local `$ref` pointer resolution:
