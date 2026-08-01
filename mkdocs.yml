@@ -1,0 +1,74 @@
+site_name: langchain-openapi
+site_description: Convert OpenAPI v3.0 & v3.1 specifications into native, type-safe LangChain tools for AI agents.
+site_url: https://github.com/langchain-ai/langchain-openapi
+
+repo_name: langchain-ai/langchain-openapi
+repo_url: https://github.com/langchain-ai/langchain-openapi
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.sections
+    - content.code.copy
+    - content.code.annotate
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [.]
+          options:
+            show_root_heading: true
+            show_source: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Quickstart: quickstart.md
+  - Architecture: architecture.md
+  - Authentication: authentication.md
+  - Middleware: middleware.md
+  - Toolkit: toolkit.md
+  - Examples:
+      - Crossref API: examples/crossref.md
+      - GitHub API: examples/github.md
+      - Swagger Petstore: examples/petstore.md
+  - Contributing: contributing.md
+  - API Reference:
+      - Loader: api/loader.md
+      - Parser: api/parser.md
+      - Toolkit: api/toolkit.md
+      - Executor: api/executor.md
+      - Middleware: api/middleware.md

@@ -1,0 +1,110 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "langchain-openapi"
+version = "1.0.0"
+description = "Convert OpenAPI specifications into native, production-grade LangChain tools."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "langchain-openapi contributors" }
+]
+keywords = [
+    "langchain",
+    "openapi",
+    "swagger",
+    "llm",
+    "agents",
+    "tools",
+    "ai",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "httpx>=0.25.0",
+    "langchain-core>=1.5.3",
+    "pydantic>=2.13.4",
+    "pytest-asyncio>=1.4.0",
+    "pyyaml>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/abhaywani114/langchain-openapi"
+Documentation = "https://abhaywani114.github.io/langchain-openapi/"
+Repository = "https://github.com/abhaywani114/langchain-openapi"
+Issues = "https://github.com/abhaywani114/langchain-openapi/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.3.0",
+    "mypy>=1.8.0",
+    "pre-commit>=3.6.0",
+    "respx>=0.21.0",
+    "types-pyyaml>=6.0.0",
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.24.0",
+    "build>=1.0.0",
+    "twine>=5.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["langchain_openapi"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "RUF", # Ruff-specific rules
+]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["langchain_openapi"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+explicit_package_bases = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-ra -q --strict-markers"
+asyncio_mode = "auto"
+markers = [
+    "e2e: End-to-end tests using real or mock live OpenAPI specifications",
+]

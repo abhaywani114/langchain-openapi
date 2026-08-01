@@ -1,0 +1,35 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Crossref REST API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.crossref.org"
+    }
+  ],
+  "paths": {
+    "/works": {
+      "get": {
+        "summary": "Search works in Crossref",
+        "operationId": "searchWorks",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Crossref search results"
+          }
+        }
+      }
+    }
+  }
+}
